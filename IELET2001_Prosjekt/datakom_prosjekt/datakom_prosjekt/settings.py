@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blodtrykk',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +77,12 @@ WSGI_APPLICATION = 'datakom_prosjekt.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': "postgres",
+        'USER': 'kaspermaster',
+        'PASSWORD': 'Mondeo42',
+        'HOST': 'datakom-django-project.cwr1kzphdrrr.eu-north-1.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
@@ -99,6 +104,13 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # for å tillate browsable API-innlogging
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
 
 
 # Internationalization
@@ -122,3 +134,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = "redirect_if_user_is_super"
+LOGOUT_REDIRECT_URL = "dashboard"
