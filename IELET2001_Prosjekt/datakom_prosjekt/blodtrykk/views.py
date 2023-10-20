@@ -1,14 +1,13 @@
 from .models import Pasient
 from rest_framework import viewsets
+
 from .serializers import PasientListSerializer, PasientDataSerializer
-from .serializers import NurseListSerializer, NurseDataSerializer
+from .serializers import NurseListSerializer, NurseDataSerializer, NurseUserSerializer
 from rest_framework import permissions
 from django.contrib.auth import authenticate, login
 from .permissions_blodtrykk import IsSuperUser
 from django.contrib.auth.models import User
 from django.shortcuts import render
-
-from django.contrib.auth.decorators import user_passes_test
 
 
 from django.contrib.auth import login
@@ -19,7 +18,6 @@ from .forms import CustomUserCreationForm, AccessToRegistrationForm
 
 
 # Create your views here.
-
 def UserView(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
@@ -59,8 +57,10 @@ class NurseViewSet(viewsets.ModelViewSet):
         return super().get_serializer_class()
 
 
-def dashboard(request):
-    return render(request, 'blodtrykk/dashboard.html')
+class NurseUserViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = NurseUserSerializer
+    queryset = User.objects.all()
+    permission_classes = [IsSuperUser]
 
 
 def dashboard(request):

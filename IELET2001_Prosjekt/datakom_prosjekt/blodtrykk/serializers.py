@@ -24,3 +24,10 @@ class NurseDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Nurse
         fields = "__all__"
+
+
+class NurseUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Nurse
+        fields = ["id", "first_name", "last_name",
+                  "birthDate", "phone", "email", "user"]

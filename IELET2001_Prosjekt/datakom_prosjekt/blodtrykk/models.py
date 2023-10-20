@@ -22,35 +22,12 @@ class Pasient(models.Model):
     last_name = models.CharField(max_length=100)
     birthDate = models.DateField(null=True)
     phone = models.IntegerField(null=True)
-    """added_by = models.ForeignKey(
-        # Dette peker på modellen som håndterer brukere i ditt Django-prosjekt.
-        settings.AUTH_USER_MODEL,
-        # Dette vil tillate tilgang til pasienter via User-instanser (f.eks., user.pasienter.all()).
-        related_name='pasienter',
-        # Hvis brukeren slettes, vil deres pasienter også slettes.
-        on_delete=models.CASCADE"""
 
 
 class Nurse(models.Model):
-
-    """user = models.OneToOneField(User, on_delete=models.CASCADE)"""
 
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     birthDate = models.DateField(null=True)
     phone = models.IntegerField(null=True)
     email = models.EmailField(null=True)
-    """password = models.CharField(max_length=100, help_text="Enter password")"""
-
-    """def save(self, *args, **kwargs):
-        if self.pk is None:  # Dette betyr at en ny oppføring blir opprettet
-            # Her oppretter du en ny bruker
-            user = User.objects.create_user(
-                username=self.email,  # Vanligvis bruker vi e-post som brukernavn
-                password=self.password,
-                first_name=self.first_name,
-                last_name=self.last_name,
-                email=self.email
-            )
-            self.user = user
-        super(Nurse, self).save(*args, **kwargs)"""
