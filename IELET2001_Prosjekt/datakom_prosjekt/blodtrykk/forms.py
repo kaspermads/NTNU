@@ -4,7 +4,8 @@ from django import forms
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
-        fields = UserCreationForm.Meta.fields + ("email",)
+        fields = UserCreationForm.Meta.fields + \
+            ("email", "first_name", "last_name")
 
 
 class AccessToRegistrationForm(forms.Form):
