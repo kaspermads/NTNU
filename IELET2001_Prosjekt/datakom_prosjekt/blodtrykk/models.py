@@ -22,6 +22,7 @@ class Pasient(models.Model):
     phone = models.IntegerField(null=True)
     added_by = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, related_name="pasient")
+    address = models.CharField(max_length=100, null=True)
 
 
 class Nurse(models.Model):
