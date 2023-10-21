@@ -10,14 +10,14 @@
       "src": "build_files.sh",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "staticfiles"
+        "distDir": "static"
       }
     }
   ],
   "routes": [
     {
-      "src": "/IELET2001_Prosjekt/datakom_prosjekt/staticfiles/(.*)",
-      "dest": "/IELET2001_Prosjekt/datakom_prosjekt/staticfiles/$1"
+      "src": "/IELET2001_Prosjekt/datakom_prosjekt/static/(.*)",
+      "dest": "/IELET2001_Prosjekt/datakom_prosjekt/static/$1"
     },
     {
       "src": "/(.*)",
