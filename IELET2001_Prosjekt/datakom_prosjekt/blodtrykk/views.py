@@ -15,6 +15,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from .forms import CustomUserCreationForm, AccessToRegistrationForm
+from .serializers import PasientListSerializer, PasientDataSerializer
 
 
 # Create your views here.
@@ -30,7 +31,7 @@ def UserView(request):
 class PasientViewSet(viewsets.ModelViewSet):
     serializer_class = PasientListSerializer
     queryset = Pasient.objects.all()
-    permission_classes = [IsSuperUser]
+    permission_classes = [permissions.DjangoModelPermissions]
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -41,8 +42,12 @@ class PasientViewSet(viewsets.ModelViewSet):
 
         return super().get_serializer_class()
 
+    def perform_create(self, serializer):
+        serializer.save(added_by=self.request.user)
 
-class NurseViewSet(viewsets.ModelViewSet):
+
+# The NurseViewSet is used to display the nurses in the database, not the users
+"""class NurseViewSet(viewsets.ModelViewSet):
     serializer_class = NurseListSerializer
     queryset = Pasient.objects.all()
     permission_classes = [IsSuperUser]
@@ -54,13 +59,13 @@ class NurseViewSet(viewsets.ModelViewSet):
         if self.action == 'retrieve':
             return NurseDataSerializer
 
-        return super().get_serializer_class()
+        return super().get_serializer_class()"""
 
 
 class NurseUserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = NurseUserSerializer
     queryset = User.objects.all()
-    permission_classes = [IsSuperUser]
+    permission_classes = [permissions.DjangoModelPermissions]
 
 
 def dashboard(request):
@@ -99,6 +104,7 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+
             login(request, user)
             # fjerner nøkkelen etter vellykket registrering
             del request.session['access_granted_to_register']

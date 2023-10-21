@@ -2,9 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 from django.conf import settings
 
-import random
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+
 # Create your models here.
 
 
@@ -22,6 +20,8 @@ class Pasient(models.Model):
     last_name = models.CharField(max_length=100)
     birthDate = models.DateField(null=True)
     phone = models.IntegerField(null=True)
+    added_by = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="pasient")
 
 
 class Nurse(models.Model):
