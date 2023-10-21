@@ -4,10 +4,10 @@
     {
       "src": "datakom_prosjekt/wsgi.py",
       "use": "@vercel/python",
-      "config": { "maxLambdaSize": "15mb", "runtime": "python3.11.6", "maxDuration": 30 }
+      "config": { "maxLambdaSize": "15mb", "runtime": "python3.9", "maxDuration": 30 }
     },
     {
-      "src": "build_files.sh",
+      "src": "/IELET2001_Prosjekt/datakom_prosjekt/build_files.sh",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "staticfiles"
@@ -16,8 +16,8 @@
   ],
   "routes": [
     {
-      "src": "/IELET2001_Prosjekt/datakom_prosjekt/staticfiles/(.*)",
-      "dest": "/IELET2001_Prosjekt/datakom_prosjekt/staticfiles/$1"
+      "src": "/IELET2001_Prosjekt/datakom_prosjekt/static/(.*)",
+      "dest": "/IELET2001_Prosjekt/datakom_prosjekt/static/$1"
     },
     {
       "src": "/(.*)",
