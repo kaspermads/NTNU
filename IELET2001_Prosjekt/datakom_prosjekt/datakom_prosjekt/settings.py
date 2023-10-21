@@ -70,6 +70,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'datakom_prosjekt.wsgi.application'
+STATICFILES_DIRS = [BASE_DIR/'static',]
+STATIC_ROOT = BASE_DIR/'staticfiles'
 
 
 # Database
