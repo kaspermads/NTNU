@@ -18,6 +18,7 @@ from rest_framework import routers
 from blodtrykk.views import dashboard, register, access_view, redirect_if_user_is_super
 from django.contrib import admin
 from django.urls import include, path
+from . import settings
 
 from blodtrykk.views import PasientViewSet, NurseUserViewSet, pasients_list_view
 """from blodtrykk.views import NurseViewSet"""
