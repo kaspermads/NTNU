@@ -22,6 +22,8 @@ from . import settings
 
 from blodtrykk.views import PasientViewSet, NurseUserViewSet, pasients_list_view
 """from blodtrykk.views import NurseViewSet"""
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 
 
 router = routers.DefaultRouter()
@@ -39,7 +41,9 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("redirect_if_user_is_super/", redirect_if_user_is_super,
          name="redirect_if_user_is_super"),
-    path("patients/", pasients_list_view, name="patients")
+    path("patients/", pasients_list_view, name="patients"),
+    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 
 
 ]

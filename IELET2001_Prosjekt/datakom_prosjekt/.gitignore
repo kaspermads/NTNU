@@ -12,6 +12,7 @@ __pycache__/
 datakom_venv/
 venv/
 ENV/
+djnago_env/
 
 # Zip-filer
 *.zip
