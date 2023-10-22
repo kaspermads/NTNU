@@ -12,6 +12,7 @@ __pycache__/
 datakom_venv/
 venv/
 ENV/
+django_env/
 
 # Zip-filer
 *.zip
