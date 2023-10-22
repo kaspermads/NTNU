@@ -24,11 +24,13 @@ class Pasient(models.Model):
         User, on_delete=models.SET_NULL, null=True, related_name="pasient")
     address = models.CharField(max_length=100, null=True)
 
-
+#The model for Nurse
 class Nurse(models.Model):
-
+   
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     birthDate = models.DateField(null=True)
     phone = models.IntegerField(null=True)
     email = models.EmailField(null=True)
+
+
