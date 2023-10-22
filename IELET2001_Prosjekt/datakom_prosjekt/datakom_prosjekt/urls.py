@@ -18,13 +18,14 @@ from rest_framework import routers
 from blodtrykk.views import dashboard, register, access_view, redirect_if_user_is_super
 from django.contrib import admin
 from django.urls import include, path
+from . import settings
 
-from blodtrykk.views import PasientViewSet, NurseUserViewSet
+from blodtrykk.views import PasientViewSet, NurseUserViewSet, pasients_list_view
 """from blodtrykk.views import NurseViewSet"""
 
 
 router = routers.DefaultRouter()
-router.register(r'Pasients', PasientViewSet, basename='pasient')
+router.register(r'Pasients', PasientViewSet, basename='pasients')
 """router.register(r'Nurses', NurseViewSet, basename='nurse')"""
 router.register(r'Nurses', NurseUserViewSet, basename='nurse_user')
 
@@ -37,8 +38,8 @@ urlpatterns = [
     path("register/", register, name="register"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("redirect_if_user_is_super/", redirect_if_user_is_super,
-         name="redirect_if_user_is_super")
-
+         name="redirect_if_user_is_super"),
+    path("patients/", pasients_list_view, name="patients")
 
 
 ]

@@ -46,6 +46,25 @@ class PasientViewSet(viewsets.ModelViewSet):
         serializer.save(added_by=self.request.user)
 
 
+def pasients_list_view(request):
+    pasients = Pasient.objects.all()
+    pasients_data = [
+        {
+
+            "id": pasients.id,
+            "first_name": pasients.first_name,
+            "last_name": pasients.last_name,
+            "birthDate": pasients.birthDate,
+            "phone": pasients.phone,
+            "added_by": pasients.added_by,
+
+        } for pasients in pasients
+    ]
+
+    context = {'pasients': pasients_data}
+    return render(request, 'view_pasients.html', context)
+
+
 # The NurseViewSet is used to display the nurses in the database, not the users
 """class NurseViewSet(viewsets.ModelViewSet):
     serializer_class = NurseListSerializer
