@@ -31,7 +31,7 @@ router.register(r'Pasients', PasientViewSet, basename='pasients')
 router.register(r'Nurses', NurseUserViewSet, basename='nurse_user')
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    path('/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
     path('dashboard/', dashboard, name='dashboard'),
