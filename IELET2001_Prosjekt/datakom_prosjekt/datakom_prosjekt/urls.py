@@ -16,7 +16,7 @@ Including another URLconf
 """
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework import routers
-from blodtrykk.views import dashboard, register, access_view, redirect_if_user_is_super
+from blodtrykk.views import dashboard, register, access_view, redirect_if_user_is_super, register_pasient
 from django.contrib import admin
 from django.urls import include, path
 from . import settings
@@ -36,6 +36,7 @@ urlpatterns = [
     path('dashboard/', dashboard, name='dashboard'),
     path("access_view/", access_view, name="access_view"),
     path("register/", register, name="register"),
+    path("register-pasient/", register_pasient, name="register-pasient"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("redirect_if_user_is_super/", redirect_if_user_is_super,
          name="redirect_if_user_is_super"),
