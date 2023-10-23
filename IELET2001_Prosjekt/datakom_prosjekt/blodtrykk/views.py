@@ -8,13 +8,15 @@ from django.contrib.auth import authenticate, login
 from .permissions_blodtrykk import IsSuperUser
 from django.contrib.auth.models import User
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
 
 
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from .forms import CustomUserCreationForm, AccessToRegistrationForm
+from .forms import CustomUserCreationForm, AccessToRegistrationForm, PasientForm
 from .serializers import PasientListSerializer, PasientDataSerializer
 
 
@@ -108,7 +110,7 @@ def access_view(request):
         form = AccessToRegistrationForm()
     return render(request, "access_form.html", {"form": form})
 
-
+# The register view is used to register a new nurse
 def register(request):
     if not request.session.get("access_granted_to_register"):
 
@@ -139,3 +141,24 @@ def redirect_if_user_is_super(request):
         # omdiriger vanlige brukere til dashboardet
         # Erstatt 'dashboard' med din faktiske dashboard URL navn
         return redirect(reverse('dashboard'))
+    
+# The register_pasient view is used to register a new pasient   
+@login_required
+def register_pasient(request):
+    if request.method == "GET":
+        return render(
+            request, "register_pasient.html",
+            {"form": PasientForm}
+        )
+    elif request.method == "POST":
+        form = PasientForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save()
+            
+            return redirect(reverse("patients"))
+    else:
+        form = PasientForm()
+    return render(request, "register_pasient.html", {"form": form})
+            
+
+           
