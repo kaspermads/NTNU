@@ -5,7 +5,6 @@ from .serializers import PatientListSerializer, PatientDataSerializer
 from .serializers import NurseListSerializer, NurseDataSerializer, NurseUserSerializer
 from rest_framework import permissions
 from django.contrib.auth import authenticate, login
-from .permissions_blodtrykk import IsSuperUser
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 
@@ -18,9 +17,6 @@ from django.urls import reverse
 
 from .forms import CustomUserCreationForm, AccessToRegistrationForm, PatientForm
 from .serializers import PatientListSerializer, PatientDataSerializer
-
-from rest_framework.decorators import action
-from rest_framework.response import Response
 
 
 # Create your views here.

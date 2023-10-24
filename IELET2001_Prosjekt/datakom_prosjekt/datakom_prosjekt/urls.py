@@ -28,12 +28,13 @@ from blodtrykk.views import PatientViewSet, NurseUserViewSet, patients_list_view
 router = routers.DefaultRouter()
 router.register(r'Patients', PatientViewSet, basename='Patients')
 router.register(r'Nurses', NurseUserViewSet, basename='nurse_user')
+router.register(r'Dashboard', dashboard, basename='dashboard')
 
 urlpatterns = [
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
-    path('dashboard/', dashboard, name='dashboard'),
+    # path('dashboard/', dashboard, name='dashboard'),
     path("access_view/", access_view, name="access_view"),
     path("register/", register, name="register"),
     path("register-patient/", register_patient, name="register-patient"),
