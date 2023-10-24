@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Patients List</h1>
 
-    {% if pasients %}
+    {% if patients %}
         <table>
             <thead>
                 <tr>
@@ -11,28 +11,27 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Birth Date</th>
-                    <th>Phone</th>
                     <th>Added By</th>
-                    <th>Pasient Photo</th>
                 </tr>
             </thead>
             <tbody>
-                {% for patient in pasients %}
+                {% for patient in patients %}
                     <tr>
-                        <td>{{ patient.id }}</td>
+                        <td><a href="{% url 'patients-data' patient.id %}">{{ patient.id }}</a></td>
                         <td>{{ patient.first_name }}</td>
                         <td>{{ patient.last_name }}</td>
                         <td>{{ patient.birthDate }}</td>
-                        <td>{{ patient.phone }}</td>
-                        <td>{{ patient.added_by }}</td>
-                        <td>{{ patient.pasient_photo }}</td>
+                        <td>{{ patient.added_by.last_name }}, {{ patient.added_by.first_name }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <h3><a href="{% url 'register-pasient' %}">Add new patient</a></h3>
+            <h3><a href="{% url 'register-patient' %}">Add new patient</a></h3>
+
+        
 
     {% else %}
         <p>No patients available.</p>
+        <h3><a href="{% url 'register-patient' %}">Add new patient</a></h3>
     {% endif %}
 {% endblock %}

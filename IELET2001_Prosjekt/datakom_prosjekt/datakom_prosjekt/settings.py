@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-d0)q=!tzda%&6*@d4$7sfmi&0o6r58p2q+=lwxixqjow17uz2e
 DEBUG = False
 
 ALLOWED_HOSTS = ['.vercel.app', "localhost", "127.0.0.1",
-                 "datakom-deployment.vercel.app", 'kaspergaupmadsen.no', 'www.kaspergaupmadsen.no.']
+                 "datakom-deployment.vercel.app", 'kaspergaupmadsen.no', 'www.kaspergaupmadsen.no']
 
 
 # Application definition
@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'blodtrykk',
     'rest_framework',
     'rest_framework_simplejwt',
-    'storages'
+    # 'storages'
 ]
 
 MIDDLEWARE = [
@@ -189,11 +189,9 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3Boto3Storage'
-
-
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3Boto3Storage'
 
 
 # Default primary key field type

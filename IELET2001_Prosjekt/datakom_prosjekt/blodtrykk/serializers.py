@@ -3,15 +3,20 @@ from . import models
 from django.contrib.auth.models import User
 
 
-class PasientListSerializer(serializers.ModelSerializer):
+class PatientListSerializer(serializers.ModelSerializer):
+    added_by = serializers.SerializerMethodField()
+
     class Meta:
-        model = models.Pasient
+        model = models.Patient
         fields = "__all__"
 
+    def get_added_by(self, obj):
+        return obj.added_by.get_full_name() if obj.added_by else "None"
 
-class PasientDataSerializer(serializers.ModelSerializer):
+
+class PatientDataSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Pasient
+        model = models.Patient
         fields = ["id", "first_name", "added_by"]
 
 

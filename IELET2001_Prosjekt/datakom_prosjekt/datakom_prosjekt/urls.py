@@ -16,17 +16,17 @@ Including another URLconf
 """
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework import routers
-from blodtrykk.views import dashboard, register, access_view, redirect_if_user_is_super, register_pasient
+from blodtrykk.views import dashboard, register, access_view, redirect_if_user_is_super, register_patient
 from django.contrib import admin
 from django.urls import include, path
 from . import settings
 
-from blodtrykk.views import PasientViewSet, NurseUserViewSet, pasients_list_view
+from blodtrykk.views import PatientViewSet, NurseUserViewSet, patients_list_view, patients_data_view
 """from blodtrykk.views import NurseViewSet"""
 
 
 router = routers.DefaultRouter()
-router.register(r'Pasients', PasientViewSet, basename='pasients')
+router.register(r'Patients', PatientViewSet, basename='Patients')
 router.register(r'Nurses', NurseUserViewSet, basename='nurse_user')
 
 urlpatterns = [
@@ -36,11 +36,12 @@ urlpatterns = [
     path('dashboard/', dashboard, name='dashboard'),
     path("access_view/", access_view, name="access_view"),
     path("register/", register, name="register"),
-    path("register-pasient/", register_pasient, name="register-pasient"),
+    path("register-patient/", register_patient, name="register-patient"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("redirect_if_user_is_super/", redirect_if_user_is_super,
          name="redirect_if_user_is_super"),
-    path("patients/", pasients_list_view, name="patients"),
+    path("patients/", patients_list_view, name="patients"),
+    path('patients/<int:pk>/', patients_data_view, name='patients-data'),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 

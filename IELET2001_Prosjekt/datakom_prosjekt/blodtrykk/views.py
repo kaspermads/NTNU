@@ -1,23 +1,22 @@
-from .models import Pasient
+from .models import Patient
 from rest_framework import viewsets
 
-from .serializers import PasientListSerializer, PasientDataSerializer
+from .serializers import PatientListSerializer, PatientDataSerializer
 from .serializers import NurseListSerializer, NurseDataSerializer, NurseUserSerializer
 from rest_framework import permissions
 from django.contrib.auth import authenticate, login
-from .permissions_blodtrykk import IsSuperUser
 from django.contrib.auth.models import User
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
 
+from django.contrib.auth.decorators import login_required
 
 
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from .forms import CustomUserCreationForm, AccessToRegistrationForm, PasientForm
-from .serializers import PasientListSerializer, PasientDataSerializer
+from .forms import CustomUserCreationForm, AccessToRegistrationForm, PatientForm
+from .serializers import PatientListSerializer, PatientDataSerializer
 
 
 # Create your views here.
@@ -30,17 +29,17 @@ def UserView(request):
         login(request, user)
 
 
-class PasientViewSet(viewsets.ModelViewSet):
-    serializer_class = PasientListSerializer
-    queryset = Pasient.objects.all()
+class PatientViewSet(viewsets.ModelViewSet):
+    serializer_class = PatientListSerializer
+    queryset = Patient.objects.all()
     permission_classes = [permissions.DjangoModelPermissions]
 
     def get_serializer_class(self):
         if self.action == 'list':
-            return PasientListSerializer
+            return PatientListSerializer
 
         if self.action == 'retrieve':
-            return PasientDataSerializer
+            return PatientDataSerializer
 
         return super().get_serializer_class()
 
@@ -48,23 +47,29 @@ class PasientViewSet(viewsets.ModelViewSet):
         serializer.save(added_by=self.request.user)
 
 
-def pasients_list_view(request):
-    pasients = Pasient.objects.all()
-    pasients_data = [
+def patients_list_view(request):
+    patients = Patient.objects.all()
+    patients_data = [
         {
 
-            "id": pasients.id,
-            "first_name": pasients.first_name,
-            "last_name": pasients.last_name,
-            "birthDate": pasients.birthDate,
-            "phone": pasients.phone,
-            "added_by": pasients.added_by,
+            "id": patients.id,
+            "first_name": patients.first_name,
+            "last_name": patients.last_name,
+            "birthDate": patients.birthDate,
+            "phone": patients.phone,
+            "added_by": patients.added_by,
 
-        } for pasients in pasients
+        } for patients in patients
     ]
 
-    context = {'pasients': pasients_data}
-    return render(request, 'view_pasients.html', context)
+    context = {'patients': patients_data}
+    return render(request, 'view_patients.html', context)
+
+
+def patients_data_view(request, pk):
+    patient = get_object_or_404(Patient, pk=pk)
+    context = {'patient': patient}
+    return render(request, 'patient_data.html', context)
 
 
 # The NurseViewSet is used to display the nurses in the database, not the users
@@ -111,6 +116,8 @@ def access_view(request):
     return render(request, "access_form.html", {"form": form})
 
 # The register view is used to register a new nurse
+
+
 def register(request):
     if not request.session.get("access_granted_to_register"):
 
@@ -141,24 +148,25 @@ def redirect_if_user_is_super(request):
         # omdiriger vanlige brukere til dashboardet
         # Erstatt 'dashboard' med din faktiske dashboard URL navn
         return redirect(reverse('dashboard'))
-    
-# The register_pasient view is used to register a new pasient   
+
+# The register_pasient view is used to register a new pasient
+
+
 @login_required
-def register_pasient(request):
+def register_patient(request):
     if request.method == "GET":
         return render(
-            request, "register_pasient.html",
-            {"form": PasientForm}
+            request, "register_patient.html",
+            {"form": PatientForm}
         )
     elif request.method == "POST":
-        form = PasientForm(request.POST, request.FILES)
+        form = PatientForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save()
-            
+            patient = form.save(commit=False)
+            patient.added_by = request.user
+            patient.save()
+
             return redirect(reverse("patients"))
     else:
-        form = PasientForm()
-    return render(request, "register_pasient.html", {"form": form})
-            
-
-           
+        form = PatientForm()
+    return render(request, "register_patient.html", {"form": form})
