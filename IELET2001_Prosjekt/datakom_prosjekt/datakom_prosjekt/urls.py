@@ -21,7 +21,7 @@ from django.contrib import admin
 from django.urls import include, path
 from . import settings
 
-from blodtrykk.views import PatientViewSet, NurseUserViewSet, patients_list_view
+from blodtrykk.views import PatientViewSet, NurseUserViewSet, patients_list_view, patients_data_view
 """from blodtrykk.views import NurseViewSet"""
 
 
@@ -41,6 +41,7 @@ urlpatterns = [
     path("redirect_if_user_is_super/", redirect_if_user_is_super,
          name="redirect_if_user_is_super"),
     path("patients/", patients_list_view, name="patients"),
+    path('patients/<int:pk>/', patients_data_view, name='patients-data'),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 

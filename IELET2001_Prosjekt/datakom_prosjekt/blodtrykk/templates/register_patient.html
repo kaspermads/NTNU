@@ -9,5 +9,6 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Submit form</button>
-    </form>
+    </form> 
+<h4><a href="{% url 'patients' %}">Back</a></h4>
 {% endblock %}

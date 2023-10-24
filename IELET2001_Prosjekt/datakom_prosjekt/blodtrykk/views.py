@@ -7,7 +7,8 @@ from rest_framework import permissions
 from django.contrib.auth import authenticate, login
 from .permissions_blodtrykk import IsSuperUser
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+
 from django.contrib.auth.decorators import login_required
 
 
@@ -49,12 +50,6 @@ class PatientViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(added_by=self.request.user)
 
-    @action(detail=True, methods=['GET'])
-    def patient_data_view(self, request, pk=None):
-        patient = self.get_object()
-        serializer = PatientDataSerializer(patient)
-        return Response(serializer.data)
-
 
 def patients_list_view(request):
     patients = Patient.objects.all()
@@ -73,6 +68,12 @@ def patients_list_view(request):
 
     context = {'patients': patients_data}
     return render(request, 'view_patients.html', context)
+
+
+def patients_data_view(request, pk):
+    patient = get_object_or_404(Patient, pk=pk)
+    context = {'patient': patient}
+    return render(request, 'patient_data.html', context)
 
 
 # The NurseViewSet is used to display the nurses in the database, not the users

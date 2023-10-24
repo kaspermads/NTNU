@@ -1,4 +1,4 @@
-{% extends 'index1.html' %} <!-- You can change this to your base template -->
+{% extends 'index1.html' %} <!-- Extend your base template -->
 
 {% block content %}
     <h1>Patients List</h1>
@@ -12,6 +12,8 @@
                     <th>Last Name</th>
                     <th>Birth Date</th>
                     <th>Added By</th>
+                    <th>Phone-number</th>
+                    <th>Address</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,16 +24,20 @@
                         <td>{{ patient.last_name }}</td>
                         <td>{{ patient.birthDate }}</td>
                         <td>{{ patient.added_by }}</td>
+                        <td>{{ patient.phone }}</td>
+                        <td>{{ patient.address }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-            <h3><a href="{% url 'register-patient' %}">Add new patient</a></h3>
-
-        
-
+      
     {% else %}
-        <p>No patients available.</p>
-        <h3><a href="{% url 'register-patient' %}">Add new patient</a></h3>
+        <p>No patients found.</p>
     {% endif %}
 {% endblock %}
+
+
+    <p><a href="{% url 'patient-list' %}">Back to Patient List</a></p>
+</body>
+</html>
+

@@ -4,9 +4,14 @@ from django.contrib.auth.models import User
 
 
 class PatientListSerializer(serializers.ModelSerializer):
+    added_by = serializers.SerializerMethodField()
+
     class Meta:
         model = models.Patient
         fields = "__all__"
+
+    def get_added_by(self, obj):
+        return obj.added_by.get_full_name() if obj.added_by else "None"
 
 
 class PatientDataSerializer(serializers.ModelSerializer):
