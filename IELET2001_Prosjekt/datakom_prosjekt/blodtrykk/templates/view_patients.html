@@ -17,7 +17,7 @@
             <tbody>
                 {% for patient in patients %}
                     <tr>
-                        <td>{{ patient.id }}</td>
+                        <td><a href="{% url 'patient-detail' patient.id %}">{{ patient.id }}</a></td>
                         <td>{{ patient.first_name }}</td>
                         <td>{{ patient.last_name }}</td>
                         <td>{{ patient.birthDate }}</td>
@@ -26,6 +26,8 @@
                 {% endfor %}
             </tbody>
         </table>
+            <h3><a href="{% url 'register-patient' %}">Add new patient</a></h3>
+
         
 
     {% else %}
