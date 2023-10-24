@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Patients List</h1>
 
-    {% if pasients %}
+    {% if patients %}
         <table>
             <thead>
                 <tr>
@@ -15,7 +15,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for patient in pasients %}
+                {% for patient in patients %}
                     <tr>
                         <td>{{ patient.id }}</td>
                         <td>{{ patient.first_name }}</td>
@@ -26,9 +26,10 @@
                 {% endfor %}
             </tbody>
         </table>
-        <h3><a href="{% url 'register-pasient' %}">Add new patient</a></h3>
+        
 
     {% else %}
         <p>No patients available.</p>
+        <h3><a href="{% url 'register-patient' %}">Add new patient</a></h3>
     {% endif %}
 {% endblock %}
