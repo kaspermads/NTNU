@@ -12,6 +12,6 @@ s3transfer==0.7.0
 django-storages==1.14.2
 botocore==1.31.69
 boto3==1.28.69
-urllib3==2.0.7
+urllib3==2.0.7, <1.27
 jmespath==1.0.1
 
