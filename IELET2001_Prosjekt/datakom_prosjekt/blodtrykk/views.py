@@ -166,7 +166,9 @@ def register_patient(request):
     elif request.method == "POST":
         form = PatientForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save()
+            patient = form.save(commit=False)
+            patient.added_by = request.user
+            patient.save()
 
             return redirect(reverse("patients"))
     else:
