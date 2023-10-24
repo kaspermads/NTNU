@@ -1,9 +1,9 @@
-{% extends 'index1.html' %} <!-- Extend your base template -->
+ {% extends 'index1.html' %}
 
 {% block content %}
-    <h1>Patients List</h1>
+    <h1>Patient Data</h1>
 
-    {% if patients %}
+    {% if patient %}
         <table>
             <thead>
                 <tr>
@@ -17,27 +17,21 @@
                 </tr>
             </thead>
             <tbody>
-                {% for patient in patients %}
-                    <tr>
-                        <td><a href="{% url 'patients-data' patient.id %}">{{ patient.id }}</a></td>
-                        <td>{{ patient.first_name }}</td>
-                        <td>{{ patient.last_name }}</td>
-                        <td>{{ patient.birthDate }}</td>
-                        <td>{{ patient.added_by }}</td>
-                        <td>{{ patient.phone }}</td>
-                        <td>{{ patient.address }}</td>
-                    </tr>
-                {% endfor %}
+                <tr>
+                    <td>{{ patient.id }}</td>
+                    <td>{{ patient.first_name }}</td>
+                    <td>{{ patient.last_name }}</td>
+                    <td>{{ patient.birthDate }}</td>
+                    <td>{{ patient.added_by }}</td>
+                    <td>{{ patient.phone }}</td>
+                    <td>{{ patient.address }}</td>
+                </tr>
             </tbody>
         </table>
       
     {% else %}
-        <p>No patients found.</p>
+        <p>No patient data found for the specified ID.</p>
     {% endif %}
-{% endblock %}
-
-
     <p><a href="{% url 'patient-list' %}">Back to Patient List</a></p>
-</body>
-</html>
+{% endblock %}
 
