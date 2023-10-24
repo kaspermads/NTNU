@@ -12,10 +12,9 @@ class CustomUserCreationForm(UserCreationForm):
 class AccessToRegistrationForm(forms.Form):
     access_code = forms.CharField(
         max_length=32, required=True, label="Access code")
-    
-    
+
+
 class PasientForm(forms.ModelForm):
     class Meta:
         model = Pasient
-        fields = ('first_name', 'last_name', 'birthDate', 'phone', 'address', 'pasient_photo')
-
+        fields = ('first_name', 'last_name', 'birthDate', 'phone', 'address')
