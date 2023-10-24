@@ -3,15 +3,15 @@ from . import models
 from django.contrib.auth.models import User
 
 
-class PasientListSerializer(serializers.ModelSerializer):
+class PatientListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Pasient
+        model = models.Patient
         fields = "__all__"
 
 
-class PasientDataSerializer(serializers.ModelSerializer):
+class PatientDataSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Pasient
+        model = models.Patient
         fields = ["id", "first_name", "added_by"]
 
 

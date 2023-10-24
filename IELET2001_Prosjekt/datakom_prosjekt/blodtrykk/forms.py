@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .models import Pasient
+from .models import Patient
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -14,7 +14,7 @@ class AccessToRegistrationForm(forms.Form):
         max_length=32, required=True, label="Access code")
 
 
-class PasientForm(forms.ModelForm):
+class PatientForm(forms.ModelForm):
     class Meta:
-        model = Pasient
+        model = Patient
         fields = ('first_name', 'last_name', 'birthDate', 'phone', 'address')

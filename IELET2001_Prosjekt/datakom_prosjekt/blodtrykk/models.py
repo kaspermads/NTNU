@@ -15,7 +15,7 @@ class SensorData(models.Model):
         return f"{self.temperate} {self.pulse} {self.timestamp}"
 
 
-class Pasient(models.Model):
+class Patient(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     birthDate = models.DateField(null=True)
@@ -29,7 +29,7 @@ class Pasient(models.Model):
 
     def save(self, *args, **kwargs):
 
-        super(Pasient, self).save(*args, **kwargs)
+        super(Patient, self).save(*args, **kwargs)
 
         # img = Image.open(self.pasient_photo.path)
 
