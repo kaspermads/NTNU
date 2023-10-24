@@ -18,6 +18,9 @@ from django.urls import reverse
 from .forms import CustomUserCreationForm, AccessToRegistrationForm, PatientForm
 from .serializers import PatientListSerializer, PatientDataSerializer
 
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
 
 # Create your views here.
 def UserView(request):
@@ -45,6 +48,12 @@ class PatientViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(added_by=self.request.user)
+
+    @action(detail=True, methods=['GET'])
+    def patient_data_view(self, request, pk=None):
+        patient = self.get_object()
+        serializer = PatientDataSerializer(patient)
+        return Response(serializer.data)
 
 
 def patients_list_view(request):
