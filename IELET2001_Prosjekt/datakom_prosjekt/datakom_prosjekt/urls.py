@@ -26,7 +26,7 @@ from blodtrykk.views import PatientViewSet, NurseUserViewSet, patients_list_view
 
 
 router = routers.DefaultRouter()
-router.register(r'Patients', PatientViewSet, basename='patients')
+router.register(r'Patients', PatientViewSet, basename='Patients')
 router.register(r'Nurses', NurseUserViewSet, basename='nurse_user')
 
 urlpatterns = [
