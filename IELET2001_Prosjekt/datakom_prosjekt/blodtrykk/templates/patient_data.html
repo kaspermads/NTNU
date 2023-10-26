@@ -28,6 +28,34 @@
                 </tr>
             </tbody>
         </table>
+
+        <h2>Blood Pressure:</h2>
+        {% if patient_blood_pressure_data %}
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Systolic</th>
+                        <th>Diastolic</th>
+                        <th>Pulse</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in patient_blood_pressure_data %}
+                        <tr>
+                            <td>{{ record.timestamp }}</td>
+                            <td>{{ record.systolic }}</td>
+                            <td>{{ record.diastolic }}</td>
+                            <td>{{ record.pulse }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No health records found for this patient.</p>
+        {% endif %}
+
       
     {% else %}
         <p>No patient data found for the specified ID.</p>
