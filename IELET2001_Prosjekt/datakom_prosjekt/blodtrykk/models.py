@@ -41,6 +41,14 @@ class Patient(models.Model):
 # The model for Nurse
 
 
+class DailyBloodPressureData(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.SET_NULL, null=True)
+    systolic = models.IntegerField()
+    diastolic = models.IntegerField()
+    pulse = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+
 class Nurse(models.Model):
 
     first_name = models.CharField(max_length=100)
