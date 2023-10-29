@@ -19,6 +19,15 @@ class PatientDataSerializer(serializers.ModelSerializer):
         model = models.Patient
         fields = ["id", "first_name", "added_by"]
 
+    def get_added_by(self, obj):
+        return obj.added_by.get_full_name() if obj.added_by else "None"
+
+
+class PatientBloodPressureDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.DailyBloodPressureData
+        fields = ["systolic", "diastolic", "pulse", "timestamp"]
+
 
 class NurseListSerializer(serializers.ModelSerializer):
     class Meta:

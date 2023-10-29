@@ -1,7 +1,10 @@
-from .models import Patient
+from .models import Patient, DailyBloodPressureData
 from rest_framework import viewsets
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
-from .serializers import PatientListSerializer, PatientDataSerializer
+
+from .serializers import PatientListSerializer, PatientDataSerializer, PatientBloodPressureDataSerializer
 from .serializers import NurseListSerializer, NurseDataSerializer, NurseUserSerializer
 from rest_framework import permissions
 from django.contrib.auth import authenticate, login
@@ -68,8 +71,20 @@ def patients_list_view(request):
 
 def patients_data_view(request, pk):
     patient = get_object_or_404(Patient, pk=pk)
-    context = {'patient': patient}
+    patient_blood_pressure_data = DailyBloodPressureData.objects.all().filter(patient=patient)
+    context = {'patient': patient,
+               'patient_blood_pressure_data': patient_blood_pressure_data}
     return render(request, 'patient_data.html', context)
+
+
+@api_view(['POST'])
+def PostDailyBloodPressureData(request):
+    if request.method == 'POST':
+        serializer = PatientBloodPressureDataSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
 
 
 # The NurseViewSet is used to display the nurses in the database, not the users

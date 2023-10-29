@@ -16,7 +16,7 @@ Including another URLconf
 """
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework import routers
-from blodtrykk.views import dashboard, register, access_view, redirect_if_user_is_super, register_patient
+from blodtrykk.views import dashboard, register, access_view, redirect_if_user_is_super, register_patient, PostDailyBloodPressureData
 from django.contrib import admin
 from django.urls import include, path
 from . import settings
@@ -32,6 +32,9 @@ router.register(r'Nurses', NurseUserViewSet, basename='nurse_user')
 urlpatterns = [
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/post_blood_pressure_data/', PostDailyBloodPressureData,
+         name='post-blood-pressure-data'),
+
     path('admin/', admin.site.urls),
     path('dashboard/', dashboard, name='dashboard'),
     path("access_view/", access_view, name="access_view"),
