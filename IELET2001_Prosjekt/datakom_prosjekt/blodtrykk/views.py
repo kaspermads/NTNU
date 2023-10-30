@@ -1,6 +1,6 @@
 from .models import Patient, DailyBloodPressureData
 from rest_framework import viewsets
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 
 
@@ -20,6 +20,9 @@ from django.urls import reverse
 
 from .forms import CustomUserCreationForm, AccessToRegistrationForm, PatientForm
 from .serializers import PatientListSerializer, PatientDataSerializer
+
+
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 # Create your views here.
@@ -78,6 +81,8 @@ def patients_data_view(request, pk):
 
 
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([permissions.IsAuthenticated])
 def PostDailyBloodPressureData(request):
     if request.method == 'POST':
         serializer = PatientBloodPressureDataSerializer(data=request.data)
