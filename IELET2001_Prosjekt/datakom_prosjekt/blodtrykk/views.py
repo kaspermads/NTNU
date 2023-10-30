@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 
 from django.contrib.auth import login
@@ -83,6 +84,7 @@ def patients_data_view(request, pk):
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([permissions.IsAuthenticated])
+@csrf_exempt
 def PostDailyBloodPressureData(request):
     if request.method == 'POST':
         serializer = PatientBloodPressureDataSerializer(data=request.data)
