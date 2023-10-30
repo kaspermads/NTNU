@@ -24,9 +24,24 @@ class PatientDataSerializer(serializers.ModelSerializer):
 
 
 class PatientBloodPressureDataSerializer(serializers.ModelSerializer):
+    patient_id = serializers.IntegerField(write_only=True)
+
     class Meta:
         model = models.DailyBloodPressureData
         fields = ["patient", "systolic", "diastolic", "pulse", "timestamp"]
+
+    def validate_patient_id(self, patient_id):
+        try:
+            patient = models.Patient.objects.get(id=patient_id)
+            return patient
+        except models.Patient.DoesNotExist:
+            raise serializers.ValidationError("Patient does not exist")
+
+    def create(self, validated_data):
+        patient = validated_data.pop("patient_id")
+        blood_pressure_data = models.DailyBloodPressureData.objects.create(
+            patient=patient, **validated_data)
+        return blood_pressure_data
 
 
 class NurseListSerializer(serializers.ModelSerializer):
