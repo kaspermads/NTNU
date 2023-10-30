@@ -54,6 +54,7 @@ class PatientViewSet(viewsets.ModelViewSet):
         serializer.save(added_by=self.request.user)
 
 
+@permission_classes([permissions.IsAuthenticated])
 def patients_list_view(request):
     patients = Patient.objects.all()
     patients_data = [
@@ -73,6 +74,7 @@ def patients_list_view(request):
     return render(request, 'view_patients.html', context)
 
 
+@permission_classes([permissions.IsAuthenticated])
 def patients_data_view(request, pk):
     patient = get_object_or_404(Patient, pk=pk)
     patient_blood_pressure_data = DailyBloodPressureData.objects.all().filter(patient=patient)
