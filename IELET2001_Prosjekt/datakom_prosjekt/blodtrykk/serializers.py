@@ -32,13 +32,14 @@ class PatientBloodPressureDataSerializer(serializers.ModelSerializer):
 
     def validate_patient_id(self, patient_id):
         try:
-            patient = models.Patient.objects.get(id=patient_id)
-            return patient
+            models.Patient.objects.get(id=patient_id)
+            return patient_id
         except models.Patient.DoesNotExist:
             raise serializers.ValidationError("Patient does not exist")
 
     def create(self, validated_data):
-        patient = validated_data.pop("patient_id")
+        patient_id = validated_data.pop("patient_id")
+        patient = models.Patient.objects.get(id=patient_id)
         blood_pressure_data = models.DailyBloodPressureData.objects.create(
             patient=patient, **validated_data)
         return blood_pressure_data
