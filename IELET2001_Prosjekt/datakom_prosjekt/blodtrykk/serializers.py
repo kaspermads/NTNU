@@ -26,7 +26,7 @@ class PatientDataSerializer(serializers.ModelSerializer):
 class PatientBloodPressureDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.DailyBloodPressureData
-        fields = ["patientID", "systolic", "diastolic", "pulse", "timestamp"]
+        fields = ["patient", "systolic", "diastolic", "pulse", "timestamp"]
 
 
 class NurseListSerializer(serializers.ModelSerializer):
