@@ -28,7 +28,7 @@ class PatientBloodPressureDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.DailyBloodPressureData
-        fields = ["patient", "systolic", "diastolic", "pulse", "timestamp"]
+        fields = ["patient_id", "systolic", "diastolic", "pulse", "timestamp"]
 
     def validate_patient_id(self, patient_id):
         try:
