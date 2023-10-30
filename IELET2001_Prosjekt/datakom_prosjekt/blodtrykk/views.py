@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from .serializers import PatientListSerializer, PatientDataSerializer, PatientBloodPressureDataSerializer
 from .serializers import NurseListSerializer, NurseDataSerializer, NurseUserSerializer
-from rest_framework import permissions
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, DjangoModelPermissions
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
@@ -39,7 +39,7 @@ def UserView(request):
 class PatientViewSet(viewsets.ModelViewSet):
     serializer_class = PatientListSerializer
     queryset = Patient.objects.all()
-    permission_classes = [permissions.DjangoModelPermissions]
+    permission_classes = [DjangoModelPermissions]
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -54,7 +54,8 @@ class PatientViewSet(viewsets.ModelViewSet):
         serializer.save(added_by=self.request.user)
 
 
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([IsAuthenticated])
+@login_required
 def patients_list_view(request):
     patients = Patient.objects.all()
     patients_data = [
@@ -74,7 +75,8 @@ def patients_list_view(request):
     return render(request, 'view_patients.html', context)
 
 
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([IsAuthenticated])
+@login_required
 def patients_data_view(request, pk):
     patient = get_object_or_404(Patient, pk=pk)
     patient_blood_pressure_data = DailyBloodPressureData.objects.all().filter(patient=patient)
@@ -85,7 +87,7 @@ def patients_data_view(request, pk):
 
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([IsAuthenticated])
 @csrf_exempt
 def PostDailyBloodPressureData(request):
     if request.method == 'POST':
@@ -115,7 +117,7 @@ def PostDailyBloodPressureData(request):
 class NurseUserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = NurseUserSerializer
     queryset = User.objects.all()
-    permission_classes = [permissions.DjangoModelPermissions]
+    permission_classes = [DjangoModelPermissions]
 
 
 def dashboard(request):
