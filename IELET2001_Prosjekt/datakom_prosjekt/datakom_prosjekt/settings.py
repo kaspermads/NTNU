@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'blodtrykk',
     'rest_framework',
     'rest_framework_simplejwt',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -179,16 +180,35 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 
 # Use 'staticfiles' as STATIC_ROOT
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATIC_ROOT = BASE_DIR / "staticfiles"
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3Boto3Storage'
+
+# Use these values from your Azure Portal:
+AZURE_ACCOUNT_NAME = 'kaspergmstorage'
+AZURE_ACCOUNT_KEY = 'mC5obmcDPKhswBnqwN5bc6D33CXQTDiTgHpYNOmeqTewa7aWTn78D+N1TmJ6pgV1069iWLWzrh4u+AStEwA7yQ=='
+AZURE_CONTAINER = 'datakom-files'
+
+# Tell Django to use Azure storage backend:
+DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+
+# Static files (CSS, JavaScript, images):
+AZURE_STATIC_LOCATION = 'static'
+STATIC_URL = 'https://{}.blob.core.windows.net/{}/'.format(
+    AZURE_ACCOUNT_NAME, AZURE_STATIC_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+
+# If you also want to serve user-uploaded media files from Azure:
+AZURE_MEDIA_LOCATION = 'media'
+MEDIA_URL = 'https://{}.blob.core.windows.net/{}/'.format(
+    AZURE_ACCOUNT_NAME, AZURE_MEDIA_LOCATION)
 
 
 # Default primary key field type
