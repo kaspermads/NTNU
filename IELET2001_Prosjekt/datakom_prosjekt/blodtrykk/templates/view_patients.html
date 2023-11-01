@@ -27,11 +27,15 @@
             </tbody>
         </table>
             <h3><a href="{% url 'register-patient' %}">Add new patient</a></h3>
+            <h3><a href ="{% url 'dashboard' %}">Back to dashboard</a></h3>
 
         
 
     {% else %}
         <p>No patients available.</p>
         <h3><a href="{% url 'register-patient' %}">Add new patient</a></h3>
+        <h3><a href ="{% url 'dashboard' %}">Back to dashboard</a></h3>
+
     {% endif %}
+
 {% endblock %}
