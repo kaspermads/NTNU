@@ -169,7 +169,7 @@ SIMPLE_JWT = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC+1'
+TIME_ZONE = 'Europe/Oslo'
 
 USE_I18N = True
 
