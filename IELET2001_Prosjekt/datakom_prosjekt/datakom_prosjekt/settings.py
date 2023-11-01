@@ -192,22 +192,17 @@ USE_TZ = True
 
 # Use these values from your Azure Portal:
 AZURE_ACCOUNT_NAME = 'kaspergmstorage'
-AZURE_ACCOUNT_KEY = 'mC5obmcDPKhswBnqwN5bc6D33CXQTDiTgHpYNOmeqTewa7aWTn78D+N1TmJ6pgV1069iWLWzrh4u+AStEwA7yQ=='
-AZURE_CONTAINER = 'datakom-files'
 
 # Tell Django to use Azure storage backend:
-DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureMediaStorage'
+STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStaticStorage'
 
-# Static files (CSS, JavaScript, images):
 AZURE_STATIC_LOCATION = 'static'
-STATIC_URL = 'https://{}.blob.core.windows.net/{}/'.format(
-    AZURE_ACCOUNT_NAME, AZURE_STATIC_LOCATION)
-STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'
-
-# If you also want to serve user-uploaded media files from Azure:
 AZURE_MEDIA_LOCATION = 'media'
-MEDIA_URL = 'https://{}.blob.core.windows.net/{}/'.format(
-    AZURE_ACCOUNT_NAME, AZURE_MEDIA_LOCATION)
+
+AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{AZURE_STATIC_LOCATION}/'
+MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{AZURE_MEDIA_LOCATION}/'
 
 
 # Default primary key field type
