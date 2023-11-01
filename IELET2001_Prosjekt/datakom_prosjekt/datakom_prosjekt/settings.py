@@ -194,8 +194,8 @@ USE_TZ = True
 AZURE_ACCOUNT_NAME = 'kaspergmstorage'
 
 # Tell Django to use Azure storage backend:
-DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureMediaStorage'
-STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStaticStorage'
+DEFAULT_FILE_STORAGE = 'datakom_prosjekt.custom_azure.AzureMediaStorage'
+STATICFILES_STORAGE = 'datakom_prosjekt.custom_azure.AzureStaticStorage'
 
 AZURE_STATIC_LOCATION = 'static'
 AZURE_MEDIA_LOCATION = 'media'
