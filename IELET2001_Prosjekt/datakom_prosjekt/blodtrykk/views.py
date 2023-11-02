@@ -19,6 +19,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from rest_framework.permissions import AllowAny
+
 
 # Importing forms, such as the built in UserCreationForm
 from .forms import CustomUserCreationForm, AccessToRegistrationForm, PatientForm
@@ -27,7 +29,7 @@ from .forms import CustomUserCreationForm, AccessToRegistrationForm, PatientForm
 class PatientViewSet(viewsets.ModelViewSet):
     serializer_class = PatientListSerializer
     queryset = Patient.objects.all()
-    # permission_classes = [DjangoModelPermissions]
+    permission_classes = [AllowAny]
 
     def get_serializer_class(self):
         if self.action == 'list':
