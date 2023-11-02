@@ -27,7 +27,7 @@ from .forms import CustomUserCreationForm, AccessToRegistrationForm, PatientForm
 class PatientViewSet(viewsets.ModelViewSet):
     serializer_class = PatientListSerializer
     queryset = Patient.objects.all()
-    permission_classes = [DjangoModelPermissions]
+    # permission_classes = [DjangoModelPermissions]
 
     def get_serializer_class(self):
         if self.action == 'list':
