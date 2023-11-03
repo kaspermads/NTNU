@@ -1,6 +1,33 @@
 from rest_framework import serializers
 from . import models
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import get_user_model
+
+
+class UserCreationSerializer(serializers.ModelSerializer):
+    password1 = serializers.CharField(write_only=True)
+    password2 = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name",
+                  "email", "password1", "password2"]
+
+    def validate(self, data):
+        form = UserCreationForm(data)
+        if form.is_valid():
+            return form.cleaned_data
+        else:
+            raise serializers.ValidationError(form.errors)
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data["email"],
+            password=validated_data["password1"],
+            email=validated_data["email"],
+        )
+        return user
 
 
 class PatientListSerializer(serializers.ModelSerializer):

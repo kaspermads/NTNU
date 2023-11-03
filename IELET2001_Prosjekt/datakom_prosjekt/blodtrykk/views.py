@@ -2,11 +2,15 @@
 from .models import Patient, DailyBloodPressureData
 from django.urls import reverse
 from rest_framework import viewsets
+from rest_framework.views import API_View
 from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404, redirect
+from rest_framework import status
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 
 # Importing serializers
-from .serializers import PatientListSerializer, PatientDataSerializer, PatientBloodPressureDataSerializer, NurseUserSerializer
+from .serializers import PatientListSerializer, PatientDataSerializer, PatientBloodPressureDataSerializer, NurseUserSerializer, UserCreationSerializer
 
 # Importing decorators
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -16,6 +20,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 # Importing authentication and permissions
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
@@ -173,3 +178,44 @@ def register_patient(request):
     else:
         form = PatientForm()
     return render(request, "register_patient.html", {"form": form})
+
+
+class LoginView(API_View):
+
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+
+            })
+        return Response({'error': 'Wrong username or password'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class RegisterView(API_View):
+
+    permission_classes = [AllowAny]
+    serializer_class = UserCreationSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'user': {
+                    'username': user.username,
+
+                },
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            }, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
