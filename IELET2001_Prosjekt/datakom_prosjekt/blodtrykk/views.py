@@ -208,7 +208,7 @@ class RegisterView(APIView):
     serializer_class = UserCreationSerializer
 
     def post(self, request):
-        serializer = self.get_serializer(data=request.data)
+        serializer = UserCreationSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             refresh = RefreshToken.for_user(user)
