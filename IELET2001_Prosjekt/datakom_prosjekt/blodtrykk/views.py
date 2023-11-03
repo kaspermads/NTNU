@@ -192,14 +192,11 @@ class LoginView(APIView):
 
         if user is not None:
             refresh = RefreshToken.for_user(user)
-            csrf_token = get_token(request)
             response = Response({
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
-                'csrf_token': csrf_token,
 
             })
-            response.set_cookie(key='csrftoken', value=csrf_token)
             return response
 
         return Response({'error': 'Wrong username or password'}, status=status.HTTP_401_UNAUTHORIZED)
