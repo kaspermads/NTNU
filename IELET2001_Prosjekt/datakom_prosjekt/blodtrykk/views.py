@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.middleware.csrf import get_token
 
 
 # Importing serializers
@@ -180,7 +181,7 @@ def register_patient(request):
     return render(request, "register_patient.html", {"form": form})
 
 
-class LoginView(API_View):
+class LoginView(APIView):
 
     permission_classes = [AllowAny]
 
@@ -191,11 +192,16 @@ class LoginView(API_View):
 
         if user is not None:
             refresh = RefreshToken.for_user(user)
-            return Response({
+            csrf_token = get_token(request)
+            response = Response({
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
+                'csrf_token': csrf_token,
 
             })
+            response.set_cookie(key='csrftoken', value=csrf_token)
+            return response
+
         return Response({'error': 'Wrong username or password'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
