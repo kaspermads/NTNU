@@ -2,7 +2,7 @@
 from .models import Patient, DailyBloodPressureData
 from django.urls import reverse
 from rest_framework import viewsets
-from rest_framework.views import API_View
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import status
@@ -199,7 +199,7 @@ class LoginView(API_View):
         return Response({'error': 'Wrong username or password'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-class RegisterView(API_View):
+class RegisterView(APIView):
 
     permission_classes = [AllowAny]
     serializer_class = UserCreationSerializer
