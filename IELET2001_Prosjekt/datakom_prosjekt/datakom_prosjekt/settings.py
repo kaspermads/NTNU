@@ -219,5 +219,5 @@ LOGOUT_REDIRECT_URL = "dashboard"
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5175",
-    "https://localhost:3000"  # Your frontend's access URL
+    "http://localhost:3000"  # Your frontend's access URL
 ]
