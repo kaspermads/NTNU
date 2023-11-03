@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from blodtrykk.forms import CustomUserCreationForm
 from . import models
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -14,7 +16,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
         fields = ["username", "email", "password1", "password2"]
 
     def validate(self, data):
-        form = UserCreationForm(data)
+        form = CustomUserCreationForm(data)
         if form.is_valid():
             return form.cleaned_data
         else:
