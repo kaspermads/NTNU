@@ -34,8 +34,8 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/post_blood_pressure_data/', PostDailyBloodPressureData,
          name='post-blood-pressure-data'),
-    path("api/login", LoginView.as_view(), name="login"),
-    path("api/register", RegisterView.as_view(), name="register"),
+    path('api/login/', LoginView.as_view(), name="login"),
+    path('api/register/', RegisterView.as_view(), name="register"),
 
     path('admin/', admin.site.urls),
     path('dashboard/', dashboard, name='dashboard'),
