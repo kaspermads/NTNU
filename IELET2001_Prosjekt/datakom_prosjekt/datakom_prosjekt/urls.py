@@ -21,7 +21,7 @@ from django.contrib import admin
 from django.urls import include, path
 from . import settings
 
-from blodtrykk.views import PatientViewSet, NurseUserViewSet, patients_list_view, patients_data_view, LogOutView, CookieTokenObtainPairView, CookieTokenRefreshView
+from blodtrykk.views import PatientViewSet, NurseUserViewSet, patients_list_view, patients_data_view, LogOutView, CookieTokenObtainPairView, CookieTokenRefreshView, CookieTokenVerifyView
 """from blodtrykk.views import NurseViewSet"""
 
 
@@ -51,7 +51,7 @@ urlpatterns = [
     path("api/token/", CookieTokenObtainPairView.as_view(),
          name="token_obtain_pair"),
     path("api/token/refresh/", CookieTokenRefreshView.as_view(), name="token_refresh"),
-    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('api/token/verify/', CookieTokenVerifyView.as_view(), name='token_verify'),
 
 
 ]

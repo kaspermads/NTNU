@@ -10,6 +10,8 @@ from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from django.middleware.csrf import get_token
 from django.http import JsonResponse
+from rest_framework_simplejwt.tokens import UntypedToken
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 
 # Importing serializers
@@ -265,3 +267,15 @@ class CookieTokenRefreshView(TokenRefreshView):
             )
             del response.data['access']
         return super().finalize_response(request, response, *args, **kwargs)
+
+
+class CookieTokenVerifyView(TokenVerifyView):
+    def post(self, request, *args, **kwargs):
+        token = request.COOKIES.get('access')
+        if not token:
+            return Response({'detail': 'No access token provided'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            UntypedToken(token)
+        except (InvalidToken, TokenError) as e:
+            return Response({'detail': 'Invalid access token'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({'detail': 'Valid access token'}, status=status.HTTP_200_OK)
