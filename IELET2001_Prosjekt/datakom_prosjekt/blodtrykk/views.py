@@ -249,7 +249,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
                 response.data['access'],
                 httponly=True,
                 secure=settings.CSRF_COOKIE_SECURE,
-                samesite='Lax' if settings.DEBUG else 'None'
+                samesite='Lax'
             )
             del response.data['access']
         return super().finalize_response(request, response, *args, **kwargs)
