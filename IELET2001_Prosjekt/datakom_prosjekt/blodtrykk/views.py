@@ -1,4 +1,5 @@
 # Importing the basics
+from django.conf import settings
 from .models import Patient, DailyBloodPressureData
 from django.urls import reverse
 from rest_framework import viewsets
@@ -6,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import status
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.middleware.csrf import get_token
 
 
@@ -202,6 +203,19 @@ class LoginView(APIView):
         return Response({'error': 'Wrong username or password'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
+class LogOutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
 class RegisterView(APIView):
 
     permission_classes = [AllowAny]
@@ -222,3 +236,34 @@ class RegisterView(APIView):
             }, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# views.py
+
+
+class CookieTokenObtainPairView(TokenObtainPairView):
+    def finalize_response(self, request, response, *args, **kwargs):
+        if response.data.get('access'):
+            response.set_cookie(
+                'access',
+                response.data['access'],
+                httponly=True,
+                secure=settings.CSRF_COOKIE_SECURE,
+                samesite='Lax' if settings.DEBUG else 'None'
+            )
+            del response.data['access']
+        return super().finalize_response(request, response, *args, **kwargs)
+
+
+class CookieTokenRefreshView(TokenRefreshView):
+    def finalize_response(self, request, response, *args, **kwargs):
+        if response.data.get('access'):
+            response.set_cookie(
+                'access',
+                response.data['access'],
+                httponly=True,
+                secure=settings.CSRF_COOKIE_SECURE,
+                samesite='Lax' if settings.DEBUG else 'None'
+            )
+            del response.data['access']
+        return super().finalize_response(request, response, *args, **kwargs)

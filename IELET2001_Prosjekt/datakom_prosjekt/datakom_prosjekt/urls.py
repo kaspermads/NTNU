@@ -21,7 +21,7 @@ from django.contrib import admin
 from django.urls import include, path
 from . import settings
 
-from blodtrykk.views import PatientViewSet, NurseUserViewSet, patients_list_view, patients_data_view
+from blodtrykk.views import PatientViewSet, NurseUserViewSet, patients_list_view, patients_data_view, LogOutView, CookieTokenObtainPairView, CookieTokenRefreshView
 """from blodtrykk.views import NurseViewSet"""
 
 
@@ -36,6 +36,7 @@ urlpatterns = [
          name='post-blood-pressure-data'),
     path('api/login/', LoginView.as_view(), name="login"),
     path('api/register/', RegisterView.as_view(), name="register"),
+    path('api/logout/', LogOutView.as_view(), name="logout"),
 
     path('admin/', admin.site.urls),
     path('dashboard/', dashboard, name='dashboard'),
@@ -47,8 +48,9 @@ urlpatterns = [
          name="redirect_if_user_is_super"),
     path("patients/", patients_list_view, name="patients"),
     path('patients/<int:pk>/', patients_data_view, name='patients-data'),
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("api/token/", CookieTokenObtainPairView.as_view(),
+         name="token_obtain_pair"),
+    path("api/token/refresh/", CookieTokenRefreshView.as_view(), name="token_refresh"),
 
 
 ]
