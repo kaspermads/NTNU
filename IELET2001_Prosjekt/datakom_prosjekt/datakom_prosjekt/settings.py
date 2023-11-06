@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-d0)q=!tzda%&6*@d4$7sfmi&0o6r58p2q+=lwxixqjow17uz2e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['.vercel.app', "localhost", "127.0.0.1",
                  "datakom-deployment.vercel.app", 'kaspergaupmadsen.no', 'www.kaspergaupmadsen.no']
@@ -226,8 +226,8 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ORIGIN_WHITELIST = ['http://localhost:5175', 'http://localhost:3000']
 
-CSRFTOKEN_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
+CSRFTOKEN_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
-CSRFTOKEN_COOKIE_SECURE = False
+CSRFTOKEN_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
