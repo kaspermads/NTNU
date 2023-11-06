@@ -14,7 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from rest_framework import routers
 from blodtrykk.views import dashboard, register, access_view, redirect_if_user_is_super, register_patient, PostDailyBloodPressureData, LoginView, RegisterView
 from django.contrib import admin
@@ -51,6 +51,7 @@ urlpatterns = [
     path("api/token/", CookieTokenObtainPairView.as_view(),
          name="token_obtain_pair"),
     path("api/token/refresh/", CookieTokenRefreshView.as_view(), name="token_refresh"),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
 
 ]
