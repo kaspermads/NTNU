@@ -52,8 +52,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsMiddleware',  # corsheaders
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -225,16 +225,13 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-    "https://datakom-frontend.vercel.app"
+    "https://datakom-frontend.vercel.app",
     "https://www.kaspergaupmadsen.no",
     "www.kaspergaupmadsen.no",
     "api.kaspergaupmadsen.no",
     "https://api.kaspergaupmadsen.no",
     # Your frontend's access URL
 ]
-CORS_ORIGIN_WHITELIST = ['http://localhost:5175',
-                       'http://localhost:3000', 'https://datakom-frontend.vercel.app', "https://www.kaspergaupmadsen.no", "https://api.kaspergaupmadsen.no"]
-
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
 CSRFTOKEN_COOKIE_SECURE = True
