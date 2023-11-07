@@ -247,7 +247,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
                 'access',
                 response.data['access'],
                 httponly=True,
-                secure=settings.CSRF_COOKIE_SECURE,
+                secure=True,
                 samesite='None'
             )
             del response.data['access']
@@ -261,7 +261,7 @@ class CookieTokenRefreshView(TokenRefreshView):
                 'access',
                 response.data['access'],
                 httponly=True,
-                secure=settings.CSRF_COOKIE_SECURE,
+                secure=True,
                 samesite='None'
             )
             del response.data['access']
