@@ -232,8 +232,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://api.kaspergaupmadsen.no",
     # Your frontend's access URL
 ]
-#CORS_ORIGIN_WHITELIST = ['http://localhost:5175',
-                       #  'http://localhost:3000', 'https://datakom-frontend.vercel.app']
+CORS_ORIGIN_WHITELIST = ['http://localhost:5175',
+                       'http://localhost:3000', 'https://datakom-frontend.vercel.app', "https://www.kaspergaupmadsen.no", "https://api.kaspergaupmadsen.no"]
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
