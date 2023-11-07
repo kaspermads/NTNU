@@ -16,7 +16,7 @@ Including another URLconf
 """
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from rest_framework import routers
-from blodtrykk.views import dashboard, register, access_view, redirect_if_user_is_super, register_patient, PostDailyBloodPressureData, LoginView, RegisterView, RegisterPatientView
+from blodtrykk.views import dashboard, access_view, redirect_if_user_is_super, PostDailyBloodPressureData, LoginView, RegisterView, RegisterPatientView
 from django.contrib import admin
 from django.urls import include, path
 from . import settings
