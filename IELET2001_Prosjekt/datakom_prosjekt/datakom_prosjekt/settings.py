@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-d0)q=!tzda%&6*@d4$7sfmi&0o6r58p2q+=lwxixqjow17uz2e
 DEBUG = False
 
 ALLOWED_HOSTS = ['.vercel.app', "localhost", "localhost:3000", "localhost:8000", "127.0.0.1",
-                 "datakom-deployment.vercel.app", 'kaspergaupmadsen.no', 'www.kaspergaupmadsen.no', "datakom-frontend.vercel.app"]
+                 "datakom-deployment.vercel.app", 'kaspergaupmadsen.no', 'www.kaspergaupmadsen.no', "datakom-frontend.vercel.app", "api.kaspergaupmadsen.no"]
 
 
 # Application definition
@@ -225,10 +225,15 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-    "https://datakom-frontend.vercel.app",  # Your frontend's access URL
+    "https://datakom-frontend.vercel.app"
+    "https://www.kaspergaupmadsen.no",
+    "kaspergaupmadsen.no",
+    "api.kaspergaupmadsen.no",
+    "https://api.kaspergaupmadsen.no",
+    # Your frontend's access URL
 ]
-CORS_ORIGIN_WHITELIST = ['http://localhost:5175',
-                         'http://localhost:3000', 'https://datakom-frontend.vercel.app']
+#CORS_ORIGIN_WHITELIST = ['http://localhost:5175',
+                       #  'http://localhost:3000', 'https://datakom-frontend.vercel.app']
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
