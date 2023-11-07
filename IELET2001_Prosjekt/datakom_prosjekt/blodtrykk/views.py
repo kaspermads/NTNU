@@ -248,7 +248,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
                 response.data['access'],
                 httponly=True,
                 secure=True,
-                samesite='Lax'
+                samesite='None'
             )
             del response.data['access']
         return super().finalize_response(request, response, *args, **kwargs)
@@ -262,7 +262,7 @@ class CookieTokenRefreshView(TokenRefreshView):
                 response.data['access'],
                 httponly=True,
                 secure=True,
-                samesite='Lax'
+                samesite='None'
             )
             del response.data['access']
         return super().finalize_response(request, response, *args, **kwargs)
