@@ -165,7 +165,6 @@ def redirect_if_user_is_super(request):
 # The register_pasient view is used to register a new pasient
 
 
-@login_required
 def register_patient(request):
     if request.method == "GET":
         return render(
@@ -207,7 +206,7 @@ class LoginView(APIView):
 
 
 class LogOutView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def post(self, request):
         response = JsonResponse({'detail': 'You are logged out'})

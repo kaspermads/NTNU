@@ -37,6 +37,7 @@ urlpatterns = [
     path('api/login/', LoginView.as_view(), name="login"),
     path('api/register/', RegisterView.as_view(), name="register"),
     path('api/logout/', LogOutView.as_view(), name="logout"),
+    path('api/register-patient/', register_patient, name="register-patient"),
 
     path('admin/', admin.site.urls),
     path('dashboard/', dashboard, name='dashboard'),

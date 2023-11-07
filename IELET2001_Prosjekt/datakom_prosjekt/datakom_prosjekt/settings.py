@@ -28,8 +28,8 @@ SECRET_KEY = 'django-insecure-d0)q=!tzda%&6*@d4$7sfmi&0o6r58p2q+=lwxixqjow17uz2e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.vercel.app', "localhost", "127.0.0.1",
-                 "datakom-deployment.vercel.app", 'kaspergaupmadsen.no', 'www.kaspergaupmadsen.no']
+ALLOWED_HOSTS = ['.vercel.app', "localhost", "localhost:3000", "localhost:8000", "127.0.0.1",
+                 "datakom-deployment.vercel.app", 'kaspergaupmadsen.no', 'www.kaspergaupmadsen.no', "datakom-frontend.vercel.app"]
 
 
 # Application definition
@@ -222,12 +222,15 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5175",
-    "http://localhost:3000"  # Your frontend's access URL
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "datakom-frontend.vercel.app",  # Your frontend's access URL
 ]
 CORS_ORIGIN_WHITELIST = ['http://localhost:5175', 'http://localhost:3000']
 
-CSRFTOKEN_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
+CSRFTOKEN_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
-CSRFTOKEN_COOKIE_SECURE = False
+CSRFTOKEN_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
