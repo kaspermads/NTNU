@@ -1,12 +1,21 @@
 # Importing the basics
+from django.conf import settings
 from .models import Patient, DailyBloodPressureData
 from django.urls import reverse
 from rest_framework import viewsets
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404, redirect
+from rest_framework import status
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
+from django.middleware.csrf import get_token
+from django.http import JsonResponse
+from rest_framework_simplejwt.tokens import UntypedToken
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+
 
 # Importing serializers
-from .serializers import PatientListSerializer, PatientDataSerializer, PatientBloodPressureDataSerializer, NurseUserSerializer
+from .serializers import PatientListSerializer, PatientDataSerializer, PatientBloodPressureDataSerializer, NurseUserSerializer, UserCreationSerializer
 
 # Importing decorators
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -16,9 +25,12 @@ from django.views.decorators.csrf import csrf_exempt
 
 # Importing authentication and permissions
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from rest_framework.permissions import AllowAny
+
 
 # Importing forms, such as the built in UserCreationForm
 from .forms import CustomUserCreationForm, AccessToRegistrationForm, PatientForm
@@ -27,7 +39,7 @@ from .forms import CustomUserCreationForm, AccessToRegistrationForm, PatientForm
 class PatientViewSet(viewsets.ModelViewSet):
     serializer_class = PatientListSerializer
     queryset = Patient.objects.all()
-    permission_classes = [DjangoModelPermissions]
+    permission_classes = [AllowAny]
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -153,7 +165,6 @@ def redirect_if_user_is_super(request):
 # The register_pasient view is used to register a new pasient
 
 
-@login_required
 def register_patient(request):
     if request.method == "GET":
         return render(
@@ -171,3 +182,99 @@ def register_patient(request):
     else:
         form = PatientForm()
     return render(request, "register_patient.html", {"form": form})
+
+
+class LoginView(APIView):
+
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            refresh = RefreshToken.for_user(user)
+            response = Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+
+            })
+            return response
+
+        return Response({'error': 'Wrong username or password'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class LogOutView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        response = JsonResponse({'detail': 'You are logged out'})
+        response.delete_cookie('access')
+        response.delete_cookie('refresh')
+        return response
+
+
+class RegisterView(APIView):
+
+    permission_classes = [AllowAny]
+    serializer_class = UserCreationSerializer
+
+    def post(self, request):
+        serializer = UserCreationSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'user': {
+                    'username': user.username,
+
+                },
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            }, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# views.py
+
+
+class CookieTokenObtainPairView(TokenObtainPairView):
+    def finalize_response(self, request, response, *args, **kwargs):
+        if response.data.get('access'):
+            response.set_cookie(
+                'access',
+                response.data['access'],
+                httponly=True,
+                secure=True,
+                samesite='None'
+            )
+            del response.data['access']
+        return super().finalize_response(request, response, *args, **kwargs)
+
+
+class CookieTokenRefreshView(TokenRefreshView):
+    def finalize_response(self, request, response, *args, **kwargs):
+        if response.data.get('access'):
+            response.set_cookie(
+                'access',
+                response.data['access'],
+                httponly=True,
+                secure=True,
+                samesite='None'
+            )
+            del response.data['access']
+        return super().finalize_response(request, response, *args, **kwargs)
+
+
+class CookieTokenVerifyView(TokenVerifyView):
+    def post(self, request, *args, **kwargs):
+        token = request.COOKIES.get('access')
+        if not token:
+            return Response({'detail': 'No access token provided'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            UntypedToken(token)
+        except (InvalidToken, TokenError) as e:
+            return Response({'detail': 'Invalid access token'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({'detail': 'Valid access token'}, status=status.HTTP_200_OK)

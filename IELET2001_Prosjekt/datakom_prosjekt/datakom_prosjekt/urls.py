@@ -14,14 +14,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from rest_framework import routers
-from blodtrykk.views import dashboard, register, access_view, redirect_if_user_is_super, register_patient, PostDailyBloodPressureData
+from blodtrykk.views import dashboard, register, access_view, redirect_if_user_is_super, register_patient, PostDailyBloodPressureData, LoginView, RegisterView
 from django.contrib import admin
 from django.urls import include, path
 from . import settings
 
-from blodtrykk.views import PatientViewSet, NurseUserViewSet, patients_list_view, patients_data_view
+from blodtrykk.views import PatientViewSet, NurseUserViewSet, patients_list_view, patients_data_view, LogOutView, CookieTokenObtainPairView, CookieTokenRefreshView, CookieTokenVerifyView
 """from blodtrykk.views import NurseViewSet"""
 
 
@@ -34,19 +34,25 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/post_blood_pressure_data/', PostDailyBloodPressureData,
          name='post-blood-pressure-data'),
+    path('api/login/', LoginView.as_view(), name="login"),
+    path('api/register/', RegisterView.as_view(), name="register"),
+    path('api/logout/', LogOutView.as_view(), name="logout"),
+    path('api/register-patient/', register_patient, name="register-patient"),
 
     path('admin/', admin.site.urls),
     path('dashboard/', dashboard, name='dashboard'),
     path("access_view/", access_view, name="access_view"),
-    path("register/", register, name="register"),
+    # path("register/", register, name="register"),
     path("register-patient/", register_patient, name="register-patient"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("redirect_if_user_is_super/", redirect_if_user_is_super,
          name="redirect_if_user_is_super"),
     path("patients/", patients_list_view, name="patients"),
     path('patients/<int:pk>/', patients_data_view, name='patients-data'),
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("api/token/", CookieTokenObtainPairView.as_view(),
+         name="token_obtain_pair"),
+    path("api/token/refresh/", CookieTokenRefreshView.as_view(), name="token_refresh"),
+    path('api/token/verify/', CookieTokenVerifyView.as_view(), name='token_verify'),
 
 
 ]

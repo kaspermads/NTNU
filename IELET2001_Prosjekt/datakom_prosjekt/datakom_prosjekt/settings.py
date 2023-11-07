@@ -28,8 +28,8 @@ SECRET_KEY = 'django-insecure-d0)q=!tzda%&6*@d4$7sfmi&0o6r58p2q+=lwxixqjow17uz2e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.vercel.app', "localhost", "127.0.0.1",
-                 "datakom-deployment.vercel.app", 'kaspergaupmadsen.no', 'www.kaspergaupmadsen.no']
+ALLOWED_HOSTS = ['.vercel.app', "localhost", "localhost:3000", "localhost:8000", "127.0.0.1",
+                 "datakom-deployment.vercel.app", 'kaspergaupmadsen.no', 'www.kaspergaupmadsen.no', "datakom-frontend.vercel.app"]
 
 
 # Application definition
@@ -45,13 +45,17 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'storages',
+    'corsheaders',
+    'rest_framework_simplejwt.token_blacklist',
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # corsheaders
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -127,8 +131,8 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-    "ROTATE_REFRESH_TOKENS": False,
-    "BLACKLIST_AFTER_ROTATION": False,
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": False,
 
     "ALGORITHM": "HS256",
@@ -212,3 +216,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "dashboard"
+
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5175",
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "https://datakom-frontend.vercel.app",  # Your frontend's access URL
+]
+CORS_ORIGIN_WHITELIST = ['http://localhost:5175',
+                         'http://localhost:3000', 'https://datakom-frontend.vercel.app']
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+CSRFTOKEN_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
