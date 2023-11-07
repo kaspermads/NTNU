@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from blodtrykk.forms import CustomUserCreationForm
 from . import models
+from .models import Patient
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
@@ -52,6 +53,17 @@ class PatientDataSerializer(serializers.ModelSerializer):
     def get_added_by(self, obj):
         return obj.added_by.get_full_name() if obj.added_by else "None"
 
+class PatientRegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Patient
+        fields = ["first_name", "last_name", "birthDate", "phone", "added_by"]
+        read_only_fields = ["added_by"] 
+        
+    def create(self, validated_data):
+        user = self.context["request"].user
+        validated_data['added_by'] = user
+        return super().create(validated_data)
+        
 
 class PatientBloodPressureDataSerializer(serializers.ModelSerializer):
     patient_id = serializers.IntegerField(write_only=True)
