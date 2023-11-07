@@ -43,7 +43,7 @@ urlpatterns = [
     path('dashboard/', dashboard, name='dashboard'),
     path("access_view/", access_view, name="access_view"),
     # path("register/", register, name="register"),
-    path("register-patient/", register_patient, name="register-patient"),
+    #path("register-patient/", register_patient, name="register-patient"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("redirect_if_user_is_super/", redirect_if_user_is_super,
          name="redirect_if_user_is_super"),
