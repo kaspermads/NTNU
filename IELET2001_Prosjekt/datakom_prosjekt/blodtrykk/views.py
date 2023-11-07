@@ -184,9 +184,7 @@ def register_patient_test(request):
     return render(request, "register_patient.html", {"form": form})
 
 class RegisterPatientView(APIView):
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
-    
+
     def post(self, request, *args, **kwargs):
         serializer = PatientRegisterSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
