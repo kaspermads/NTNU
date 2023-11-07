@@ -230,7 +230,6 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ORIGIN_WHITELIST = ['http://localhost:5175',
                          'http://localhost:3000', 'https://datakom-frontend.vercel.app']
 
-CSRFTOKEN_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
 CSRFTOKEN_COOKIE_SECURE = True
