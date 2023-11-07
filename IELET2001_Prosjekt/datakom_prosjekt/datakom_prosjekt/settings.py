@@ -119,7 +119,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # for å tillate browsable API-innlogging
         #'rest_framework.authentication.SessionAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication'
+        #'rest_framework_simplejwt.authentication.JWTAuthentication'
+        'blodtrykk.authentication.CookieJWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -221,14 +222,10 @@ LOGOUT_REDIRECT_URL = "dashboard"
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5175",
-    "http://localhost:3000",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
+   
     "https://datakom-frontend.vercel.app",
     "https://www.kaspergaupmadsen.no",
-    "www.kaspergaupmadsen.no",
-    "api.kaspergaupmadsen.no",
+  
     "https://api.kaspergaupmadsen.no",
     # Your frontend's access URL
 ]
