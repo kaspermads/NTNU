@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d0)q=!tzda%&6*@d4$7sfmi&0o6r58p2q+=lwxixqjow17uz2e'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -88,11 +88,11 @@ WSGI_APPLICATION = 'datakom_prosjekt.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "postgres",
-        'USER': 'kaspermaster',
-        'PASSWORD': 'Mondeo42',
-        'HOST': 'datakom-django-project.cwr1kzphdrrr.eu-north-1.rds.amazonaws.com',
-        'PORT': '5432',
+        'NAME': os.environ.get("DATABASE_NAME"),
+        'USER': os.environ.get("DATABASE_USER"),
+        'PASSWORD': os.environ.get("DATABASE_PASSWORD"),
+        'HOST': os.environ.get("DATABASE_HOST"),
+        'PORT': os.environ.get("DATABASE_PORT"),
     }
 }
 
@@ -196,11 +196,11 @@ USE_TZ = True
 # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3Boto3Storage'
 
 # Use these values from your Azure Portal:
-AZURE_ACCOUNT_NAME = 'kaspergmstorage'
+AZURE_ACCOUNT_NAME = os.environ.get("AZURE_ACCOUNT_NAME")
 
 # Tell Django to use Azure storage backend:
-DEFAULT_FILE_STORAGE = 'custom_azure.AzureMediaStorage'
-STATICFILES_STORAGE = 'custom_azure.AzureStaticStorage'
+DEFAULT_FILE_STORAGE = os.environ.get("AZURE_DEFAULT_FILE_STORAGE")
+STATICFILES_STORAGE = os.environ.get("AZURE_STATICFILES_STORAGE")
 
 AZURE_STATIC_LOCATION = 'static'
 AZURE_MEDIA_LOCATION = 'media'
