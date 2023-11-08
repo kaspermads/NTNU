@@ -91,7 +91,6 @@ def patients_data_view(request, pk):
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
-@csrf_exempt
 def PostDailyBloodPressureData(request):
     if request.method == 'POST':
         serializer = PatientBloodPressureDataSerializer(data=request.data)

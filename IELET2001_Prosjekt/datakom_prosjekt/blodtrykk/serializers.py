@@ -72,6 +72,9 @@ class PatientBloodPressureDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.DailyBloodPressureData
         fields = ["patient_id", "systolic", "diastolic", "pulse", "timestamp"]
+        extra_kwargs = {
+            'oxygen_saturation': {'required': False}
+        }
 
     # Validates that the patient_id is valid and checks if the patient exists
     def validate_patient_id(self, patient_id):
