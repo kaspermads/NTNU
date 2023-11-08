@@ -47,23 +47,24 @@ class PatientListSerializer(serializers.ModelSerializer):
 class PatientDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Patient
-        fields = ["id", "first_name", "added_by"]
+        fields = "__all__"
 
     # Overrides the get_added_by method to return the full name of the user who added the patient
     def get_added_by(self, obj):
         return obj.added_by.get_full_name() if obj.added_by else "None"
 
+
 class PatientRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
         fields = ["first_name", "last_name", "birthDate", "phone", "added_by"]
-        read_only_fields = ["added_by"] 
-        
+        read_only_fields = ["added_by"]
+
     def create(self, validated_data):
         user = self.context["request"].user
         validated_data['added_by'] = user
         return super().create(validated_data)
-        
+
 
 class PatientBloodPressureDataSerializer(serializers.ModelSerializer):
     patient_id = serializers.IntegerField(write_only=True)
