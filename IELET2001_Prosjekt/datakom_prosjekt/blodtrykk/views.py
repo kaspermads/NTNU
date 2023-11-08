@@ -164,6 +164,7 @@ def redirect_if_user_is_super(request):
 
 # The register_pasient view is used to register a new pasient
 
+
 @api_view(['POST'])
 def register_patient_test(request):
     if request.method == "GET":
@@ -183,14 +184,17 @@ def register_patient_test(request):
         form = PatientForm()
     return render(request, "register_patient.html", {"form": form})
 
+
 class RegisterPatientView(APIView):
 
     def post(self, request, *args, **kwargs):
-        serializer = PatientRegisterSerializer(data=request.data, context={"request": request})
+        serializer = PatientRegisterSerializer(
+            data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save(added_by=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class LoginView(APIView):
 
