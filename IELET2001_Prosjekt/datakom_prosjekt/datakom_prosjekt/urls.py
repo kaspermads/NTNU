@@ -14,12 +14,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from rest_framework import routers
 from blodtrykk.views import dashboard, access_view, redirect_if_user_is_super, PostDailyBloodPressureData, LoginView, RegisterView, RegisterPatientView
 from django.contrib import admin
 from django.urls import include, path
-from . import settings
+
 
 from blodtrykk.views import PatientViewSet, NurseUserViewSet, patients_list_view, patients_data_view, LogOutView, CookieTokenObtainPairView, CookieTokenRefreshView, CookieTokenVerifyView
 """from blodtrykk.views import NurseViewSet"""
