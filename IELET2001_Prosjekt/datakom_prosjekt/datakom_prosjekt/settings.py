@@ -196,11 +196,11 @@ USE_TZ = True
 # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3Boto3Storage'
 
 # Use these values from your Azure Portal:
-AZURE_ACCOUNT_NAME = os.environ.get("AZURE_ACCOUNT_NAME")
+AZURE_ACCOUNT_NAME ='kaspergmstorage' #os.environ.get("AZURE_ACCOUNT_NAME")
 
 # Tell Django to use Azure storage backend:
-DEFAULT_FILE_STORAGE = os.environ.get("AZURE_DEFAULT_FILE_STORAGE")
-STATICFILES_STORAGE = os.environ.get("AZURE_STATICFILES_STORAGE")
+DEFAULT_FILE_STORAGE = 'custom_azure.AzureMediaStorage'
+STATICFILES_STORAGE = 'custom_azure.AzureStaticStorage'
 
 AZURE_STATIC_LOCATION = 'static'
 AZURE_MEDIA_LOCATION = 'media'
