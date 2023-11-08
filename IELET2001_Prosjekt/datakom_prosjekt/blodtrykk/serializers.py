@@ -37,7 +37,7 @@ class PatientListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Patient
-        fields = "__all__"
+        fields = ["id", "first_name", "last_name", "birthDate"]
 
     # Overrides the get_added_by method to return the full name of the user who added the patient
     def get_added_by(self, obj):
