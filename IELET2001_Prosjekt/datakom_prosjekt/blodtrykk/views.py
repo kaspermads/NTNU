@@ -39,7 +39,7 @@ from .forms import CustomUserCreationForm, AccessToRegistrationForm, PatientForm
 class PatientViewSet(viewsets.ModelViewSet):
     serializer_class = PatientListSerializer
     queryset = Patient.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -52,6 +52,19 @@ class PatientViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(added_by=self.request.user)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+
+        patient_blood_pressure_data = DailyBloodPressureData.objects.all().filter(patient=instance)
+        patient_blood_pressure_data_serializer = PatientBloodPressureDataSerializer(
+            patient_blood_pressure_data, many=True)
+
+        data = serializer.data
+        data["blood_pressure_data"] = patient_blood_pressure_data_serializer.data
+
+        return Response(data)
 
 
 # The patients_list_view is used to display the patients in the database while requiring authentication and login
@@ -104,13 +117,14 @@ def PostDailyBloodPressureData(request):
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def GetDailyBloodPressureData(request, patient_id):
-    try:
-        blood_pressure_data = DailyBloodPressureData.objects.all().filter(patient=patient_id)
-        serializer = PatientBloodPressureDataSerializer(
-            blood_pressure_data, many=True)
-        return Response(serializer.data)
-    except DailyBloodPressureData.DoesNotExist:
+    blood_pressure_data = DailyBloodPressureData.objects.all().filter(patient=patient_id)
+
+    if not blood_pressure_data:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = PatientBloodPressureDataSerializer(
+        blood_pressure_data, many=True)
+    return Response(serializer.data)
 
 
 class NurseUserViewSet(viewsets.ReadOnlyModelViewSet):

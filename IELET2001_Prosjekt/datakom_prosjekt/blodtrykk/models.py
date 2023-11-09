@@ -21,7 +21,7 @@ class Patient(models.Model):
 
 class DailyBloodPressureData(models.Model):
     patient = models.ForeignKey(
-        Patient, on_delete=models.SET_NULL, null=True)
+        Patient, on_delete=models.SET_NULL, null=True, related_name="patient_blood_pressure_data")
     systolic = models.IntegerField()
     diastolic = models.IntegerField()
     pulse = models.IntegerField()

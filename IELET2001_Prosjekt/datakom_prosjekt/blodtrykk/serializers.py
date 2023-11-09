@@ -44,28 +44,6 @@ class PatientListSerializer(serializers.ModelSerializer):
         return obj.added_by.get_full_name() if obj.added_by else "None"
 
 
-class PatientDataSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Patient
-        fields = "__all__"
-
-    # Overrides the get_added_by method to return the full name of the user who added the patient
-    def get_added_by(self, obj):
-        return obj.added_by.get_full_name() if obj.added_by else "None"
-
-
-class PatientRegisterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Patient
-        fields = ["first_name", "last_name", "birthDate", "phone", "added_by"]
-        read_only_fields = ["added_by"]
-
-    def create(self, validated_data):
-        user = self.context["request"].user
-        validated_data['added_by'] = user
-        return super().create(validated_data)
-
-
 class PatientBloodPressureDataSerializer(serializers.ModelSerializer):
     patient_id = serializers.IntegerField(write_only=True)
 
@@ -93,6 +71,31 @@ class PatientBloodPressureDataSerializer(serializers.ModelSerializer):
         blood_pressure_data = models.DailyBloodPressureData.objects.create(
             patient=patient, **validated_data)
         return blood_pressure_data
+
+
+class PatientDataSerializer(serializers.ModelSerializer):
+    patient_blood_pressure_data = PatientBloodPressureDataSerializer(source="patient_blood_pressure_data",
+                                                                     many=True, read_only=True)
+
+    class Meta:
+        model = models.Patient
+        fields = "__all__"
+
+    # Overrides the get_added_by method to return the full name of the user who added the patient
+    def get_added_by(self, obj):
+        return obj.added_by.get_full_name() if obj.added_by else "None"
+
+
+class PatientRegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Patient
+        fields = ["first_name", "last_name", "birthDate", "phone", "added_by"]
+        read_only_fields = ["added_by"]
+
+    def create(self, validated_data):
+        user = self.context["request"].user
+        validated_data['added_by'] = user
+        return super().create(validated_data)
 
 
 class NurseListSerializer(serializers.ModelSerializer):
