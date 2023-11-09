@@ -100,6 +100,19 @@ def PostDailyBloodPressureData(request):
         return Response(serializer.errors, status=400)
 
 
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def GetDailyBloodPressureData(request, patient_id):
+    try:
+        blood_pressure_data = DailyBloodPressureData.objects.all().filter(patient=patient_id)
+        serializer = PatientBloodPressureDataSerializer(
+            blood_pressure_data, many=True)
+        return Response(serializer.data)
+    except DailyBloodPressureData.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
 class NurseUserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = NurseUserSerializer
     queryset = User.objects.all()

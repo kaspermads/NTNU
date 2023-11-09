@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from rest_framework import routers
-from blodtrykk.views import dashboard, access_view, redirect_if_user_is_super, PostDailyBloodPressureData, LoginView, RegisterView, RegisterPatientView
+from blodtrykk.views import dashboard, access_view, redirect_if_user_is_super, PostDailyBloodPressureData, LoginView, RegisterView, RegisterPatientView, GetDailyBloodPressureData
 from django.contrib import admin
 from django.urls import include, path
 
@@ -36,13 +36,17 @@ urlpatterns = [
     path('api/login/', LoginView.as_view(), name="login"),
     path('api/register/', RegisterView.as_view(), name="register"),
     path('api/logout/', LogOutView.as_view(), name="logout"),
-    path('api/register-patient/', RegisterPatientView.as_view(), name="register-patient"),
+    path('api/register-patient/', RegisterPatientView.as_view(),
+         name="register-patient"),
+
+    path('patient/<int:patient_id>/bloodpressure/',
+         GetDailyBloodPressureData, name="bloodpressure"),
 
     path('admin/', admin.site.urls),
     path('dashboard/', dashboard, name='dashboard'),
     path("access_view/", access_view, name="access_view"),
     # path("register/", register, name="register"),
-    #path("register-patient/", register_patient, name="register-patient"),
+    # path("register-patient/", register_patient, name="register-patient"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("redirect_if_user_is_super/", redirect_if_user_is_super,
          name="redirect_if_user_is_super"),
