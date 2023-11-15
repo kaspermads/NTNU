@@ -49,7 +49,8 @@ class PatientBloodPressureDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.DailyBloodPressureData
-        fields = ["patient_id", "systolic", "diastolic", "pulse", "timestamp"]
+        fields = ["patient_id", "systolic", "diastolic",
+                  "pulse", "timestamp", "oxygen_saturation"]
         extra_kwargs = {
             'oxygen_saturation': {'required': False}
         }
@@ -71,6 +72,33 @@ class PatientBloodPressureDataSerializer(serializers.ModelSerializer):
         blood_pressure_data = models.DailyBloodPressureData.objects.create(
             patient=patient, **validated_data)
         return blood_pressure_data
+
+
+class PatientOxygenSaturationDataSerializer(serializers.ModelSerializer):
+    patient_id = serializers.IntegerField(write_only=True)
+
+    class Meta:
+        model = models.DailyOxygenSaturationData
+        fields = ["timestamp", "oxygen_saturation"]
+
+    # Validates that the patient_id is valid and checks if the patient exists
+
+    def validate_patient_id(self, patient_id):
+        try:
+            models.Patient.objects.get(id=patient_id)
+            return patient_id
+        except models.Patient.DoesNotExist:
+            raise serializers.ValidationError("Patient does not exist")
+
+    # Overrides the create method to create a new DailyBloodPressureData object with the patient_id sent in the request.
+    # The patient_id is removed from the validated_data and the patient is fetched from the database.
+    # The DailyBloodPressureData object is then created with the patient and the validated_data.
+    def create(self, validated_data):
+        patient_id = validated_data.pop("patient_id")
+        patient = models.Patient.objects.get(id=patient_id)
+        oxygen_saturation_data = models.DailyOxygenSaturationData.objects.create(
+            patient=patient, **validated_data)
+        return oxygen_saturation_data
 
 
 class PatientDataSerializer(serializers.ModelSerializer):

@@ -29,6 +29,13 @@ class DailyBloodPressureData(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
 
+class DailyOxygenSaturationData(models.Model):
+    patient = models.ForeignKey(
+        Patient, on_delete=models.SET_NULL, null=True, related_name="patient_blood_oxygen_saturation_data")
+    oxygen_saturation = models.IntegerField(null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+
 class Nurse(models.Model):
 
     first_name = models.CharField(max_length=100)

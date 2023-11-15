@@ -1,6 +1,6 @@
 # Importing the basics
 from django.conf import settings
-from .models import Patient, DailyBloodPressureData
+from .models import Patient, DailyBloodPressureData, DailyOxygenSaturationData
 from django.urls import reverse
 from rest_framework import viewsets
 from rest_framework.views import APIView
@@ -15,7 +15,7 @@ from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 
 # Importing serializers
-from .serializers import PatientListSerializer, PatientDataSerializer, PatientBloodPressureDataSerializer, NurseUserSerializer, UserCreationSerializer, PatientRegisterSerializer
+from .serializers import PatientListSerializer, PatientDataSerializer, PatientBloodPressureDataSerializer, NurseUserSerializer, UserCreationSerializer, PatientRegisterSerializer, PatientOxygenSaturationDataSerializer
 
 # Importing decorators
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -100,18 +100,37 @@ def PostDailyBloodPressureData(request):
         return Response(serializer.errors, status=400)
 
 
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def PostDailyOxygenSaturationData(request):
+    if request.method == 'POST':
+        serializer = PatientOxygenSaturationDataSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+
+
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def GetDailyBloodPressureData(request, patient_id):
     blood_pressure_data = DailyBloodPressureData.objects.all().filter(patient=patient_id)
+    oxygen_saturation_data = DailyOxygenSaturationData.objects.all().filter(patient=patient_id)
 
     if not blood_pressure_data:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = PatientBloodPressureDataSerializer(
+    blood_pressure_serializer = PatientBloodPressureDataSerializer(
         blood_pressure_data, many=True)
-    return Response(serializer.data)
+    oxygen_saturation_serializer = PatientOxygenSaturationDataSerializer(
+        oxygen_saturation_data, many=True)
+
+    return Response({
+        'blood_pressure_data': blood_pressure_serializer.data,
+        'oxygen_saturation_data': oxygen_saturation_serializer.data
+    })
 
 
 class NurseUserViewSet(viewsets.ReadOnlyModelViewSet):

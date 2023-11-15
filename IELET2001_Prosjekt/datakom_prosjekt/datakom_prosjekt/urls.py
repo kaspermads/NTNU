@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from rest_framework import routers
-from blodtrykk.views import dashboard, access_view, redirect_if_user_is_super, PostDailyBloodPressureData, LoginView, RegisterView, RegisterPatientView, GetDailyBloodPressureData
+from blodtrykk.views import dashboard, access_view, redirect_if_user_is_super, PostDailyBloodPressureData, LoginView, RegisterView, RegisterPatientView, GetDailyBloodPressureData, PostDailyOxygenSaturationData
 from django.contrib import admin
 from django.urls import include, path
 
@@ -33,6 +33,8 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/post_blood_pressure_data/', PostDailyBloodPressureData,
          name='post-blood-pressure-data'),
+    path('api/post_oxygen_saturation_data/',
+         PostDailyOxygenSaturationData, name="daily-oxygen-saturation-data"),
     path('api/login/', LoginView.as_view(), name="login"),
     path('api/register/', RegisterView.as_view(), name="register"),
     path('api/logout/', LogOutView.as_view(), name="logout"),
