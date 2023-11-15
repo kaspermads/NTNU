@@ -25,7 +25,6 @@ class DailyBloodPressureData(models.Model):
     systolic = models.IntegerField()
     diastolic = models.IntegerField()
     pulse = models.IntegerField()
-    oxygen_saturation = models.IntegerField(null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
 

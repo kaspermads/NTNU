@@ -104,6 +104,8 @@ class PatientOxygenSaturationDataSerializer(serializers.ModelSerializer):
 class PatientDataSerializer(serializers.ModelSerializer):
     patient_blood_pressure_data = PatientBloodPressureDataSerializer(
         many=True, read_only=True)
+    patient_blood_oxygen_saturation_data = PatientOxygenSaturationDataSerializer(
+        many=True, read_only=True)
 
     class Meta:
         model = models.Patient
