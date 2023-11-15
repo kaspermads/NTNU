@@ -23,7 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = "django-insecure-d0)q=!tzda%&6*@d4$7sfmi&0o6r58p2q+=lwxixqjow17uz2e"
+# os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -88,11 +89,12 @@ WSGI_APPLICATION = 'datakom_prosjekt.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get("DATABASE_NAME"),
-        'USER': os.environ.get("DATABASE_USER"),
-        'PASSWORD': os.environ.get("DATABASE_PASSWORD"),
-        'HOST': os.environ.get("DATABASE_HOST"),
-        'PORT': os.environ.get("DATABASE_PORT"),
+        'NAME': "postgres",  # os.environ.get("DATABASE_NAME"),
+        'USER': "kaspermaster",  # os.environ.get("DATABASE_USER"),
+        'PASSWORD': "Mondeo42",  # os.environ.get("DATABASE_PASSWORD"),
+        # os.environ.get("DATABASE_HOST"),
+        'HOST': "datakom-django-project.cwr1kzphdrrr.eu-north-1.rds.amazonaws.com",
+        'PORT': "5432",  # os.environ.get("DATABASE_PORT"),
     }
 }
 
@@ -118,8 +120,8 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # for å tillate browsable API-innlogging
-        #'rest_framework.authentication.SessionAuthentication',
-        #'rest_framework_simplejwt.authentication.JWTAuthentication'
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication'
         'blodtrykk.authentication.CookieJWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
@@ -196,7 +198,7 @@ USE_TZ = True
 # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3Boto3Storage'
 
 # Use these values from your Azure Portal:
-AZURE_ACCOUNT_NAME ='kaspergmstorage' #os.environ.get("AZURE_ACCOUNT_NAME")
+AZURE_ACCOUNT_NAME = os.environ.get("AZURE_ACCOUNT_NAME")
 
 # Tell Django to use Azure storage backend:
 DEFAULT_FILE_STORAGE = 'custom_azure.AzureMediaStorage'
@@ -222,10 +224,10 @@ LOGOUT_REDIRECT_URL = "dashboard"
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
-   
+
     "https://datakom-frontend.vercel.app",
     "https://www.kaspergaupmadsen.no",
-  
+
     "https://api.kaspergaupmadsen.no",
     # Your frontend's access URL
 ]

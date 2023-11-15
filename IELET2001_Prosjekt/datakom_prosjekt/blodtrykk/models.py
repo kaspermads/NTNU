@@ -21,10 +21,17 @@ class Patient(models.Model):
 
 class DailyBloodPressureData(models.Model):
     patient = models.ForeignKey(
-        Patient, on_delete=models.SET_NULL, null=True)
+        Patient, on_delete=models.SET_NULL, null=True, related_name="patient_blood_pressure_data")
     systolic = models.IntegerField()
     diastolic = models.IntegerField()
     pulse = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+
+class DailyOxygenSaturationData(models.Model):
+    patient = models.ForeignKey(
+        Patient, on_delete=models.SET_NULL, null=True, related_name="patient_blood_oxygen_saturation_data")
+    oxygen_saturation = models.IntegerField(null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
 
