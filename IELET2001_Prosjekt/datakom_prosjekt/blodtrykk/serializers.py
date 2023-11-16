@@ -77,7 +77,7 @@ class PatientOxygenSaturationDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.DailyOxygenSaturationData
-        fields = ["timestamp", "oxygen_saturation"]
+        fields = ["patient_id", "timestamp", "oxygen_saturation"]
 
     # Validates that the patient_id is valid and checks if the patient exists
 
