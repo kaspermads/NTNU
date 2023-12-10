@@ -29,8 +29,7 @@ SECRET_KEY = "django-insecure-d0)q=!tzda%&6*@d4$7sfmi&0o6r58p2q+=lwxixqjow17uz2e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.vercel.app', "localhost", "localhost:3000", "localhost:8000", "127.0.0.1",
-                 "datakom-deployment.vercel.app", 'kaspergaupmadsen.no', 'www.kaspergaupmadsen.no', "datakom-frontend.vercel.app", "api.kaspergaupmadsen.no"]
+ALLOWED_HOSTS = ['.vercel.app', "datakom-deployment.vercel.app", 'kaspergaupmadsen.no', 'www.kaspergaupmadsen.no', "datakom-frontend.vercel.app", "api.kaspergaupmadsen.no"]
 
 
 # Application definition
@@ -48,7 +47,6 @@ INSTALLED_APPS = [
     'storages',
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
-
 ]
 
 MIDDLEWARE = [
@@ -185,18 +183,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-# STATIC_URL = '/static/'
-
-# Use 'staticfiles' as STATIC_ROOT
-# STATIC_ROOT = BASE_DIR / "staticfiles"
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Media files
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3Boto3Storage'
-
 # Use these values from your Azure Portal:
 AZURE_ACCOUNT_NAME = os.environ.get("AZURE_ACCOUNT_NAME")
 
@@ -227,10 +213,9 @@ CORS_ALLOWED_ORIGINS = [
 
     "https://datakom-frontend.vercel.app",
     "https://www.kaspergaupmadsen.no",
-
     "https://api.kaspergaupmadsen.no",
-    # Your frontend's access URL
 ]
+#Only allow secure cookies (HTTPS)
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
 CSRFTOKEN_COOKIE_SECURE = True

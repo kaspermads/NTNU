@@ -21,20 +21,26 @@ from django.urls import include, path
 
 
 from blodtrykk.views import PatientViewSet, NurseUserViewSet, patients_list_view, patients_data_view, LogOutView, CookieTokenObtainPairView, CookieTokenRefreshView, CookieTokenVerifyView
-"""from blodtrykk.views import NurseViewSet"""
 
 
 router = routers.DefaultRouter()
 router.register(r'Patients', PatientViewSet, basename='Patients')
 router.register(r'Nurses', NurseUserViewSet, basename='nurse_user')
 
+#The different urls/endpoints for the project
 urlpatterns = [
-    path('api/', include(router.urls)),
+     
+    #The root of the api
+    path('api/', include(router.urls)), 
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    
+    #The two endpoints for posting ESP32 data
     path('api/post_blood_pressure_data/', PostDailyBloodPressureData,
          name='post-blood-pressure-data'),
     path('api/post_oxygen_saturation_data/',
          PostDailyOxygenSaturationData, name="daily-oxygen-saturation-data"),
+    
+    #Used for login, logout and registration
     path('api/login/', LoginView.as_view(), name="login"),
     path('api/register/', RegisterView.as_view(), name="register"),
     path('api/logout/', LogOutView.as_view(), name="logout"),
@@ -43,22 +49,26 @@ urlpatterns = [
 
     path('patient/<int:patient_id>/bloodpressure/',
          GetDailyBloodPressureData, name="bloodpressure"),
-
-    path('admin/', admin.site.urls),
-    path('dashboard/', dashboard, name='dashboard'),
-    path("access_view/", access_view, name="access_view"),
-    # path("register/", register, name="register"),
-    # path("register-patient/", register_patient, name="register-patient"),
-    path("accounts/", include("django.contrib.auth.urls")),
-    path("redirect_if_user_is_super/", redirect_if_user_is_super,
-         name="redirect_if_user_is_super"),
-    path("patients/", patients_list_view, name="patients"),
-    path('patients/<int:pk>/', patients_data_view, name='patients-data'),
+    
+    #The three endpoints for getting, refreshing and verifying the JWT token
     path("api/token/", CookieTokenObtainPairView.as_view(),
          name="token_obtain_pair"),
     path("api/token/refresh/", CookieTokenRefreshView.as_view(), name="token_refresh"),
     path('api/token/verify/', CookieTokenVerifyView.as_view(), name='token_verify'),
 
+
+
+
+    #Not in use
+    path('admin/', admin.site.urls),
+    path('dashboard/', dashboard, name='dashboard'),
+    path("access_view/", access_view, name="access_view"),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("redirect_if_user_is_super/", redirect_if_user_is_super,
+         name="redirect_if_user_is_super"),
+    path("patients/", patients_list_view, name="patients"),
+    path('patients/<int:pk>/', patients_data_view, name='patients-data'),
+   
 
 ]
 urlpatterns += router.urls

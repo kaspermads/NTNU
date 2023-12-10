@@ -2,7 +2,7 @@
 
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-
+#The custom authentication class that uses cookies instead of a header. 
 class CookieJWTAuthentication(JWTAuthentication):
     def authenticate(self, request):
         # Get the token from the cookie

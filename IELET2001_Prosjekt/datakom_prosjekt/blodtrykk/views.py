@@ -35,12 +35,13 @@ from rest_framework.permissions import AllowAny
 # Importing forms, such as the built in UserCreationForm
 from .forms import CustomUserCreationForm, AccessToRegistrationForm, PatientForm
 
-
+#The PatientViewSet is used to display the patients in the database while requiring authentication and login
 class PatientViewSet(viewsets.ModelViewSet):
     serializer_class = PatientListSerializer
     queryset = Patient.objects.all()
     permission_classes = [IsAuthenticated]
 
+    #Overrides the serializer_class to PatientDataSerializer based on the action
     def get_serializer_class(self):
         if self.action == 'list':
             return PatientListSerializer
@@ -50,11 +51,12 @@ class PatientViewSet(viewsets.ModelViewSet):
 
         return super().get_serializer_class()
 
+    #Overrides the create function to add the user that created the patient
     def perform_create(self, serializer):
         serializer.save(added_by=self.request.user)
 
 
-# The patients_list_view is used to display the patients in the database while requiring authentication and login
+#Test view for the patient list, not in use.
 @permission_classes([IsAuthenticated])
 @login_required
 def patients_list_view(request):
@@ -76,7 +78,7 @@ def patients_list_view(request):
     return render(request, 'view_patients.html', context)
 
 
-# The patients_data_view is used to display the patients data in the database while requiring authentication and login
+#Test view for the patient data, not in use.
 @permission_classes([IsAuthenticated])
 @login_required
 def patients_data_view(request, pk):
@@ -87,25 +89,30 @@ def patients_data_view(request, pk):
     return render(request, 'patient_data.html', context)
 
 
-# The PostDailyBloodPressureData is used to view the daily blood pressure data sent from the ESP32
+#The PostDailyBloodPressureData is used to view the daily bloodpressuredata sent from the ESP32 to the database
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def PostDailyBloodPressureData(request):
     if request.method == 'POST':
         serializer = PatientBloodPressureDataSerializer(data=request.data)
-        if serializer.is_valid():
+        
+        #Checks if the data is valid, and saves it to the database. Maintains data integrity.
+        if serializer.is_valid(): 
             serializer.save()
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
 
 
+#Handles the post request for the daily oxygen saturation data.
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def PostDailyOxygenSaturationData(request):
     if request.method == 'POST':
         serializer = PatientOxygenSaturationDataSerializer(data=request.data)
+        
+        #Checks if the data is valid, and saves it to the database. Maintains data integrity.
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)
@@ -228,8 +235,10 @@ class RegisterPatientView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+#
 class LoginView(APIView):
 
+    #Allows anyone to have access to the endpoint. To demonstrate functionality.
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -244,11 +253,21 @@ class LoginView(APIView):
                 'access': str(refresh.access_token),
 
             })
+            
+            response.set_cookie(
+                'access',
+                str(refresh.access_token),
+                httponly=True,
+                secure=True,
+                samesite='Lax'
+                
+            )
             return response
 
         return Response({'error': 'Wrong username or password'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
+# The LogOutView is used to log out the user by deleting the access and refresh token cookies.
 class LogOutView(APIView):
     permission_classes = [AllowAny]
 
@@ -259,11 +278,14 @@ class LogOutView(APIView):
         return response
 
 
+#Handles the registration of a new nurse.
 class RegisterView(APIView):
 
+    #Allows anyone to have access to the endpoint. To demonstrate functionality.
     permission_classes = [AllowAny]
     serializer_class = UserCreationSerializer
 
+    #If the data is valid, the user is created and a refresh and access token is returned.
     def post(self, request):
         serializer = UserCreationSerializer(data=request.data)
         if serializer.is_valid():
@@ -281,8 +303,8 @@ class RegisterView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# views.py
-
+# The CookieJWTAuthentication is used to authenticate the user with the JWT token.
+# The three views below are used to get, refresh and verify the token.
 
 class CookieTokenObtainPairView(TokenObtainPairView):
     def finalize_response(self, request, response, *args, **kwargs):
@@ -296,6 +318,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             )
             del response.data['access']
         return super().finalize_response(request, response, *args, **kwargs)
+
 
 
 class CookieTokenRefreshView(TokenRefreshView):
